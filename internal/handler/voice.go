@@ -3,7 +3,6 @@ package handler
 import (
 	"io"
 	"sync"
-	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/jonas747/dca"
@@ -33,10 +32,10 @@ type voice struct {
 }
 
 type audio struct {
-	title    string
-	duration time.Duration
-	url      string
-	path     string
+	title string
+	url   string
+	path  string
+	image string
 }
 
 func (v *voice) getQueue() []*audio {

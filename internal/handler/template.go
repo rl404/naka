@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/rl404/naka/internal/constant"
 	"github.com/rl404/naka/internal/utils"
+	"github.com/rl404/naka/internal/youtube"
 )
 
 type template struct {
@@ -59,27 +61,48 @@ func (t *template) getHelp() *discordgo.MessageEmbed {
 }
 
 func (t *template) getQueue(queue []*audio) *discordgo.MessageEmbed {
-	str := "```\n"
-	for _, q := range queue {
-		str += q.title + "\n"
+	body := "```\n"
+	for i, q := range queue {
+		body += utils.PadLeft(strconv.Itoa(i+1), 2, " ") + " " + q.title + "\n"
 	}
-	str += "```"
+	body += "```"
 
 	return &discordgo.MessageEmbed{
 		Title:       "Queue",
-		Description: str,
+		Description: body,
 		Color:       constant.ColorBlue,
 	}
 }
 
 func (t *template) playing(audio *audio) *discordgo.MessageEmbed {
 	return &discordgo.MessageEmbed{
-		Title:       audio.title,
-		Description: audio.duration.String(),
-		Color:       constant.ColorBlue,
-		URL:         audio.url,
+		Title: audio.title,
+		Color: constant.ColorBlue,
+		URL:   audio.url,
+		Thumbnail: &discordgo.MessageEmbedThumbnail{
+			URL: audio.image,
+		},
 		Author: &discordgo.MessageEmbedAuthor{
 			Name: "playing",
 		},
+	}
+}
+
+func (t *template) search(videos []youtube.Video) *discordgo.MessageEmbed {
+	var body string
+	if len(videos) == 0 {
+		body = "empty..."
+	} else {
+		body = "```\n"
+		for i, v := range videos {
+			body += utils.PadLeft(strconv.Itoa(i+1), 2, " ") + " " + v.Title + "\n"
+		}
+		body += "```"
+	}
+
+	return &discordgo.MessageEmbed{
+		Title:       "Search Results",
+		Description: body,
+		Color:       constant.ColorBlue,
 	}
 }

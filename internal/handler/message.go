@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -39,14 +40,16 @@ func (h *messageHandler) handler() func(*discordgo.Session, *discordgo.MessageCr
 			return
 		}
 
-		// Command and prefix check.
-		if h.prefixCheck(m.Content) {
-			return
-		}
-
 		g, err := h.getGuildByChannelID(s, m.ChannelID)
 		if err != nil {
 			utils.Error(err.Error())
+			return
+		}
+
+		h.handleSearchResponse(s, m, g)
+
+		// Command and prefix check.
+		if h.prefixCheck(m.Content) {
 			return
 		}
 
@@ -209,7 +212,7 @@ func (h *messageHandler) searchMusic(s *discordgo.Session, m *discordgo.MessageC
 			return err
 		}
 
-		path, err := h.youtube.GetURL(id)
+		path, err := h.youtube.GetPath(id)
 		if err != nil {
 			if _, err := s.ChannelMessageSend(m.ChannelID, constant.MsgInvalidYoutube); err != nil {
 				return err
@@ -217,15 +220,99 @@ func (h *messageHandler) searchMusic(s *discordgo.Session, m *discordgo.MessageC
 			return err
 		}
 
+		video, err := h.youtube.GetVideo(id)
+		if err != nil {
+			if _, err := s.ChannelMessageSend(m.ChannelID, err.Error()); err != nil {
+				return err
+			}
+			return err
+		}
+
 		h.voices[g.ID].addQueue(audio{
-			title: id,
+			title: video.Title,
 			path:  path,
 			url:   args[0],
+			image: video.Image,
 		})
 
 		go h.voices[g.ID].play()
 		return nil
 	}
+
+	videos, err := h.youtube.Search(strings.Join(args, " "), 10)
+	if err != nil {
+		if _, err := s.ChannelMessageSend(m.ChannelID, err.Error()); err != nil {
+			return err
+		}
+		return err
+	}
+
+	if _, err := s.ChannelMessageSendEmbed(m.ChannelID, h.template.search(videos)); err != nil {
+		return err
+	}
+
+	if len(videos) == 0 {
+		return nil
+	}
+
+	key := utils.GetKey("search", m.Author.ID)
+	if err := h.cache.Set(key, videos); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (h *messageHandler) handleSearchResponse(s *discordgo.Session, m *discordgo.MessageCreate, g *discordgo.Guild) error {
+	var videos []youtube.Video
+	key := utils.GetKey("search", m.Author.ID)
+	if err := h.cache.Get(key, &videos); err != nil {
+		return nil
+	}
+
+	if err := h.cache.Delete(key); err != nil {
+		return err
+	}
+
+	i, err := strconv.Atoi(m.Content)
+	if err != nil {
+		return nil
+	}
+
+	if i <= 0 || i > len(videos) {
+		return nil
+	}
+
+	id := videos[i-1].ID
+
+	path, err := h.youtube.GetPath(id)
+	if err != nil {
+		if _, err := s.ChannelMessageSend(m.ChannelID, constant.MsgInvalidYoutube); err != nil {
+			return err
+		}
+		return err
+	}
+
+	video, err := h.youtube.GetVideo(id)
+	if err != nil {
+		if _, err := s.ChannelMessageSend(m.ChannelID, err.Error()); err != nil {
+			return err
+		}
+		return err
+	}
+
+	if err := h.handleJoin(s, m, g); err != nil {
+		return err
+	}
+
+	h.voices[g.ID].addQueue(audio{
+		title: video.Title,
+		path:  path,
+		url:   h.youtube.GenerateLink(id),
+		image: video.Image,
+	})
+
+	go h.voices[g.ID].play()
 
 	return nil
 }

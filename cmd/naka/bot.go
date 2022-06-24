@@ -28,14 +28,18 @@ func bot() error {
 	defer c.Close()
 
 	// Init youtube.
-	youtube := youtube.New(cfg.Youtube.Key)
+	youtube, err := youtube.New(cfg.Youtube.Key)
+	if err != nil {
+		return err
+	}
+	utils.Info("youtube initialized")
 
 	// Init discord.
 	discord, err := discord.New(cfg.Discord.Token)
 	if err != nil {
 		return err
 	}
-	utils.Info("repository discord initialized")
+	utils.Info("discord initialized")
 
 	// Init & add handler.
 	discord.AddReadyHandler(handler.NewReadyHandler(cfg.Discord.Prefix))
