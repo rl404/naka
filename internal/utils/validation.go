@@ -1,10 +1,10 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/rl404/fairy/validation"
-	"github.com/rl404/naka/internal/errors"
 )
 
 var val validation.Validator
@@ -21,5 +21,9 @@ func Validate(data interface{}) error {
 }
 
 func valErrRequired(f string, param ...string) error {
-	return errors.ErrRequiredField(strings.ToLower(f))
+	return errRequiredField(strings.ToLower(f))
+}
+
+func errRequiredField(str string) error {
+	return fmt.Errorf("required field %s", str)
 }

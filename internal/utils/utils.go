@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -30,12 +29,4 @@ func Ellipsis(str string, length int) string {
 		return string(r[:length-3]) + "..."
 	}
 	return str
-}
-
-// GenerateLink to generate entry web page link.
-func GenerateLink(host string, path ...interface{}) string {
-	for _, p := range path {
-		host += fmt.Sprintf("/%v", p)
-	}
-	return host
 }

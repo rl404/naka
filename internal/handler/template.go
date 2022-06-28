@@ -62,8 +62,12 @@ func (t *template) getHelp() *discordgo.MessageEmbed {
 
 func (t *template) getQueue(queue []*audio) *discordgo.MessageEmbed {
 	body := "```\n"
-	for i, q := range queue {
-		body += utils.PadLeft(strconv.Itoa(i+1), 2, " ") + " " + q.title + "\n"
+	if len(queue) == 0 {
+		body += "empty..."
+	} else {
+		for i, q := range queue {
+			body += utils.PadLeft(strconv.Itoa(i+1), 2, " ") + " " + q.title + "\n"
+		}
 	}
 	body += "```"
 
@@ -88,10 +92,24 @@ func (t *template) playing(audio *audio) *discordgo.MessageEmbed {
 	}
 }
 
+func (t *template) paused(audio *audio) *discordgo.MessageEmbed {
+	return &discordgo.MessageEmbed{
+		Title: audio.title,
+		Color: constant.ColorBlue,
+		URL:   audio.url,
+		Thumbnail: &discordgo.MessageEmbedThumbnail{
+			URL: audio.image,
+		},
+		Author: &discordgo.MessageEmbedAuthor{
+			Name: "paused",
+		},
+	}
+}
+
 func (t *template) search(videos []youtube.Video) *discordgo.MessageEmbed {
 	var body string
 	if len(videos) == 0 {
-		body = "empty..."
+		body = "not found..."
 	} else {
 		body = "```\n"
 		for i, v := range videos {

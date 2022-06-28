@@ -72,7 +72,21 @@ func (v *voice) previousQueue() {
 	}
 }
 
-func (v *voice) deleteQueue() {
+func (v *voice) deleteQueue(i int) {
+	v.Lock()
+	defer v.Unlock()
+	if i > len(v.queue)-1 {
+		return
+	}
+
+	if i >= v.queueI {
+		v.queueI--
+	}
+
+	v.queue = append(v.queue[:i], v.queue[i+1:]...)
+}
+
+func (v *voice) purgeQueue() {
 	v.Lock()
 	defer v.Unlock()
 	v.queueI, v.queue = 0, nil
