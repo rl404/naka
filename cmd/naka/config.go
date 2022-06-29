@@ -7,6 +7,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/rl404/fairy/cache"
 	"github.com/rl404/fairy/log"
+	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
 )
 
@@ -18,19 +19,19 @@ type config struct {
 }
 
 type discordConfig struct {
-	Token  string `envconfig:"TOKEN" validate:"required" mod:"trim"`
-	Prefix string `envconfig:"PREFIX" validate:"required" mod:"trim" default:"="`
+	Token  string `envconfig:"TOKEN" required:"true"`
+	Prefix string `envconfig:"PREFIX" required:"true" default:"="`
 }
 
 type cacheConfig struct {
-	Dialect  string        `envconfig:"DIALECT" default:"inmemory" validate:"required,oneof=redis inmemory memcache" mod:"trim,lcase"`
+	Dialect  string        `envconfig:"DIALECT" required:"true" default:"inmemory"`
 	Address  string        `envconfig:"ADDRESS"`
 	Password string        `envconfig:"PASSWORD"`
-	Time     time.Duration `envconfig:"TIME" default:"24h" validate:"required,gt=0"`
+	Time     time.Duration `envconfig:"TIME" required:"true" default:"24h"`
 }
 
 type youtubeConfig struct {
-	Key string `envconfig:"KEY" validate:"required" mod:"trim"`
+	Key string `envconfig:"KEY" required:"true"`
 }
 
 type logConfig struct {
@@ -61,9 +62,8 @@ func getConfig() (*config, error) {
 		return nil, err
 	}
 
-	// Validate.
-	if err := utils.Validate(&cfg); err != nil {
-		return nil, err
+	if cfg.Cache.Time <= 0 {
+		return nil, errors.ErrInvalidCacheTime
 	}
 
 	// Init global log.
