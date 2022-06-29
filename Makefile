@@ -59,8 +59,8 @@ docker-build: clean fmt
 	@$(DOCKER_IMAGE) prune -f --filter label=stage=naka_builder
 
 # Start built docker containers.
-.PHONY: docker-bot
-docker-bot:
+.PHONY: docker
+docker:
 	@$(COMPOSE_CMD) -f $(COMPOSE_BOT) up -d
 	@$(COMPOSE_CMD) -f $(COMPOSE_BOT) logs --follow --tail 20
 

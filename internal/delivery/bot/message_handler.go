@@ -64,11 +64,11 @@ func (b *Bot) messageHandler() func(*discordgo.Session, *discordgo.MessageCreate
 			errors.Wrap(ctx, b.service.HandleResume(ctx, m, g))
 		case "stop":
 			errors.Wrap(ctx, b.service.HandleStop(ctx, m, g))
-		case "skip", "next":
+		case "next":
 			errors.Wrap(ctx, b.service.HandleNext(ctx, m, g))
 		case "previous", "prev":
 			errors.Wrap(ctx, b.service.HandlePrev(ctx, m, g))
-		case "jump":
+		case "skip", "jump":
 			errors.Wrap(ctx, b.service.HandleJump(ctx, m, g, args[1:]))
 		case "queue", "q":
 			errors.Wrap(ctx, b.service.HandleQueue(ctx, m, g, args[1:]))

@@ -79,7 +79,7 @@ func (s *service) HandleNext(ctx context.Context, m *discordgo.MessageCreate, g 
 	s.discord.SetDisableAutoNext(g.ID, true)
 	s.discord.Skip(g.ID)
 
-	_, err := s.discord.SendMessage(ctx, m.ChannelID, entity.Skipped)
+	_, err := s.discord.SendMessage(ctx, m.ChannelID, entity.Next)
 	return errors.Wrap(ctx, err)
 }
 

@@ -29,14 +29,16 @@ func (c *Client) clean(str string) string {
 // GetHelp to get help template.
 func (c *Client) GetHelp() *discordgo.MessageEmbed {
 	cmds := [][]string{
+		{entity.PlayCmd, entity.PlayDesc},
+		{entity.QueueCmd, entity.QueueDesc},
 		{entity.JoinCmd, entity.JoinDesc},
 		{entity.LeaveCmd, entity.LeaveDesc},
 		{entity.PauseCmd, entity.PauseDesc},
 		{entity.ResumeCmd, entity.ResumeDesc},
 		{entity.NextCmd, entity.NextDesc},
 		{entity.PrevCmd, entity.PrevDesc},
+		{entity.SkipCmd, entity.SkipDesc},
 		{entity.StopCmd, entity.StopDesc},
-		{entity.QueueCmd, entity.QueueDesc},
 		{entity.RemoveCmd, entity.RemoveDesc},
 		{entity.PurgeCmd, entity.PurgeDesc},
 	}
@@ -57,7 +59,11 @@ func (c *Client) GetHelp() *discordgo.MessageEmbed {
 		Fields: []*discordgo.MessageEmbedField{
 			{
 				Name:  "Play Song",
-				Value: c.clean(entity.PlayDesc),
+				Value: c.clean(entity.PlaySample),
+			},
+			{
+				Name:  "Queue Song",
+				Value: c.clean(entity.QueueSample),
 			},
 			{
 				Name:  "Other Commands",
