@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-
+	"github.com/rl404/naka/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -21,6 +20,6 @@ func main() {
 	})
 
 	if err := cmd.Execute(); err != nil {
-		log.Println(err)
+		utils.Fatal(err.Error())
 	}
 }

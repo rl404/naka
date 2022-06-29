@@ -46,18 +46,12 @@ github.com/go-chi/chi
 github.com/go-chi/chi/middleware
 # github.com/go-playground/locales v0.14.0
 ## explicit; go 1.13
-github.com/go-playground/locales
-github.com/go-playground/locales/currency
 # github.com/go-playground/mold/v4 v4.2.0
 ## explicit; go 1.15
-github.com/go-playground/mold/v4
-github.com/go-playground/mold/v4/modifiers
 # github.com/go-playground/universal-translator v0.18.0
 ## explicit; go 1.13
-github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.11.0
 ## explicit; go 1.13
-github.com/go-playground/validator/v10
 # github.com/go-redis/redis/v8 v8.11.5
 ## explicit; go 1.17
 github.com/go-redis/redis/v8
@@ -119,7 +113,6 @@ github.com/kelseyhightower/envconfig
 github.com/kkdai/youtube/v2
 # github.com/leodido/go-urn v1.2.1
 ## explicit; go 1.13
-github.com/leodido/go-urn
 # github.com/mattn/go-colorable v0.1.12
 ## explicit; go 1.13
 github.com/mattn/go-colorable
@@ -142,8 +135,6 @@ github.com/rl404/fairy/log/logrus
 github.com/rl404/fairy/log/nolog
 github.com/rl404/fairy/log/zap
 github.com/rl404/fairy/log/zerolog
-github.com/rl404/fairy/validation
-github.com/rl404/fairy/validation/playground
 # github.com/rs/zerolog v1.27.0
 ## explicit; go 1.15
 github.com/rs/zerolog
@@ -151,10 +142,8 @@ github.com/rs/zerolog/internal/cbor
 github.com/rs/zerolog/internal/json
 # github.com/segmentio/go-camelcase v0.0.0-20160726192923-7085f1e3c734
 ## explicit
-github.com/segmentio/go-camelcase
 # github.com/segmentio/go-snakecase v1.2.0
 ## explicit
-github.com/segmentio/go-snakecase
 # github.com/sirupsen/logrus v1.8.1
 ## explicit; go 1.13
 github.com/sirupsen/logrus
@@ -202,7 +191,6 @@ golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/nacl/secretbox
 golang.org/x/crypto/poly1305
 golang.org/x/crypto/salsa20/salsa
-golang.org/x/crypto/sha3
 # golang.org/x/net v0.0.0-20220617184016-355a448f1bc9
 ## explicit; go 1.17
 golang.org/x/net/context
