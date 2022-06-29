@@ -9,5 +9,4 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -mod ve
 # New stage from scratch
 FROM alpine:3.14
 LABEL stage="naka_binary"
-COPY --from=go_builder /naka/cmd/naka/naka /cmd/naka/naka
-WORKDIR /cmd/naka
+COPY --from=go_builder /naka/cmd/naka/naka naka
