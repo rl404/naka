@@ -43,7 +43,7 @@ const (
 	Paused             = "Paused."
 	Resumed            = "Resumed."
 	Stopped            = "Stopped."
-	Skipped            = "Skipped."
+	Next               = "Next."
 	Previous           = "Previous."
 	InvalidQueue       = "Invalid queue."
 	Purged             = "Queue has been purged."
