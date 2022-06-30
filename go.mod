@@ -8,7 +8,7 @@ require (
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.7.15
-	github.com/rl404/fairy v0.14.3
+	github.com/rl404/fairy v0.14.7
 	github.com/spf13/cobra v1.4.0
 	google.golang.org/api v0.85.0
 )
@@ -24,10 +24,6 @@ require (
 	github.com/dop251/goja v0.0.0-20220516123900-4418d4575a41 // indirect
 	github.com/elastic/go-elasticsearch/v7 v7.2.0 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
-	github.com/go-playground/locales v0.14.0 // indirect
-	github.com/go-playground/mold/v4 v4.2.0 // indirect
-	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.11.0 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
@@ -38,12 +34,10 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jonas747/ogg v0.0.0-20161220051205-b4f6f4cf3757 // indirect
-	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/zerolog v1.27.0 // indirect
-	github.com/segmentio/go-camelcase v0.0.0-20160726192923-7085f1e3c734 // indirect
-	github.com/segmentio/go-snakecase v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.opencensus.io v0.23.0 // indirect
