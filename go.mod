@@ -8,7 +8,7 @@ require (
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.7.15
-	github.com/rl404/fairy v0.14.10
+	github.com/rl404/fairy v0.15.1
 	github.com/spf13/cobra v1.4.0
 	google.golang.org/api v0.88.0
 )
@@ -51,6 +51,6 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220624142145-8cd45d7dbd1f // indirect
-	google.golang.org/grpc v1.47.0 // indirect
+	google.golang.org/grpc v1.48.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
