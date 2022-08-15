@@ -8,7 +8,7 @@ require (
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.7.15
-	github.com/rl404/fairy v0.15.10
+	github.com/rl404/fairy v0.18.0
 	github.com/spf13/cobra v1.4.0
 	google.golang.org/api v0.92.0
 )
@@ -36,6 +36,7 @@ require (
 	github.com/jonas747/ogg v0.0.0-20161220051205-b4f6f4cf3757 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/newrelic/go-agent/v3 v3.18.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/zerolog v1.27.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
