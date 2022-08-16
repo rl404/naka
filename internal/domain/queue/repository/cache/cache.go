@@ -23,13 +23,13 @@ func New(cacher cache.Cacher) *Cache {
 
 func (c *Cache) getQueue(ctx context.Context, gID string) (data *entity.Queue) {
 	key := utils.GetKey("queue", gID)
-	c.cacher.Get(key, &data)
+	c.cacher.Get(ctx, key, &data)
 	return data
 }
 
 func (c *Cache) setQueue(ctx context.Context, gID string, data entity.Queue) error {
 	key := utils.GetKey("queue", gID)
-	return errors.Wrap(ctx, c.cacher.Set(key, data))
+	return errors.Wrap(ctx, c.cacher.Set(ctx, key, data))
 }
 
 // GetList to get list.
@@ -86,7 +86,7 @@ func (c *Cache) Remove(ctx context.Context, gID string, is ...int) error {
 // Purge to delete queue.
 func (c *Cache) Purge(ctx context.Context, gID string) error {
 	key := utils.GetKey("queue", gID)
-	return errors.Wrap(ctx, c.cacher.Delete(key))
+	return errors.Wrap(ctx, c.cacher.Delete(ctx, key))
 }
 
 // GetIndex to get index.

@@ -6,6 +6,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/service"
 	"github.com/rl404/naka/internal/utils"
@@ -36,9 +37,9 @@ func (b *Bot) Stop() error {
 }
 
 // RegisterReadyHandler to register ready handler.
-func (b *Bot) RegisterHandler() {
+func (b *Bot) RegisterHandler(nrApp *newrelic.Application) {
 	b.service.RegisterReadyHandler(b.readyHandler())
-	b.service.RegisterMessageHandler(b.messageHandler())
+	b.service.RegisterMessageHandler(b.messageHandler(nrApp))
 }
 
 func (b *Bot) log(ctx context.Context) {

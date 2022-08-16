@@ -12,10 +12,11 @@ import (
 )
 
 type config struct {
-	Discord discordConfig `envconfig:"DISCORD"`
-	Cache   cacheConfig   `envconfig:"CACHE"`
-	Youtube youtubeConfig `envconfig:"YOUTUBE"`
-	Log     logConfig     `envconfig:"LOG"`
+	Discord  discordConfig  `envconfig:"DISCORD"`
+	Cache    cacheConfig    `envconfig:"CACHE"`
+	Youtube  youtubeConfig  `envconfig:"YOUTUBE"`
+	Log      logConfig      `envconfig:"LOG"`
+	Newrelic newrelicConfig `envconfig:"NEWRELIC"`
 }
 
 type discordConfig struct {
@@ -39,6 +40,11 @@ type logConfig struct {
 	Level log.LogLevel `envconfig:"LEVEL" default:"-1"`
 	JSON  bool         `envconfig:"JSON" default:"false"`
 	Color bool         `envconfig:"COLOR" default:"true"`
+}
+
+type newrelicConfig struct {
+	Name       string `envconfig:"NAME" default:"naka"`
+	LicenseKey string `envconfig:"LICENSE_KEY"`
 }
 
 const envPath = "../../.env"

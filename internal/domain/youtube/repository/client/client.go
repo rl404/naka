@@ -10,10 +10,12 @@ import (
 	"time"
 
 	"github.com/kkdai/youtube/v2"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/naka/internal/domain/youtube/entity"
 	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
 	"google.golang.org/api/googleapi/transport"
+	"google.golang.org/api/option"
 	_youtube "google.golang.org/api/youtube/v3"
 )
 
@@ -25,10 +27,10 @@ type Client struct {
 
 // New to create new youtube client.
 func New(key string) (*Client, error) {
-	service, err := _youtube.New(&http.Client{
-		Transport: &transport.APIKey{Key: key},
+	service, err := _youtube.NewService(context.Background(), option.WithHTTPClient(&http.Client{
+		Transport: newrelic.NewRoundTripper(&transport.APIKey{Key: key}),
 		Timeout:   5 * time.Second,
-	})
+	}))
 	if err != nil {
 		return nil, err
 	}

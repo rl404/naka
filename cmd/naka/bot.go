@@ -4,8 +4,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/fairy/cache"
+	nrCache "github.com/rl404/fairy/monitoring/newrelic/cache"
 	_bot "github.com/rl404/naka/internal/delivery/bot"
 	discordRepository "github.com/rl404/naka/internal/domain/discord/repository"
 	discordClient "github.com/rl404/naka/internal/domain/discord/repository/client"
@@ -28,11 +31,25 @@ func bot() error {
 		return err
 	}
 
+	// Init newrelic.
+	nrApp, err := newrelic.NewApplication(
+		newrelic.ConfigAppName(cfg.Newrelic.Name),
+		newrelic.ConfigLicense(cfg.Newrelic.LicenseKey),
+		newrelic.ConfigDistributedTracerEnabled(true),
+	)
+	if err != nil {
+		utils.Error(err.Error())
+	} else {
+		defer nrApp.Shutdown(10 * time.Second)
+		utils.Info("newrelic initialized")
+	}
+
 	// Init cache.
 	c, err := cache.New(cacheType[cfg.Cache.Dialect], cfg.Cache.Address, cfg.Cache.Password, cfg.Cache.Time)
 	if err != nil {
 		return err
 	}
+	c = nrCache.New(cfg.Cache.Dialect, c)
 	utils.Info("cache initialized")
 	defer c.Close()
 
@@ -70,7 +87,7 @@ func bot() error {
 
 	// Init bot.
 	bot := _bot.New(service, cfg.Discord.Prefix)
-	bot.RegisterHandler()
+	bot.RegisterHandler(nrApp)
 	utils.Info("bot initialized")
 
 	// Run bot.

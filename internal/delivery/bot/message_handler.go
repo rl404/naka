@@ -6,10 +6,11 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/naka/internal/errors"
 )
 
-func (b *Bot) messageHandler() func(*discordgo.Session, *discordgo.MessageCreate) {
+func (b *Bot) messageHandler(nrApp *newrelic.Application) func(*discordgo.Session, *discordgo.MessageCreate) {
 	return func(s *discordgo.Session, m *discordgo.MessageCreate) {
 		ctx := errors.Init(context.Background())
 		defer b.log(ctx)
@@ -47,6 +48,11 @@ func (b *Bot) messageHandler() func(*discordgo.Session, *discordgo.MessageCreate
 		r := regexp.MustCompile(`[^\s"']+|"([^"]*)"|'([^']*)`)
 		args := r.FindAllString(m.Content, -1)
 
+		tx := nrApp.StartTransaction("Command " + args[0])
+		defer tx.End()
+
+		ctx = newrelic.NewContext(ctx, tx)
+
 		switch args[0] {
 		case "ping":
 			errors.Wrap(ctx, b.service.HandlePing(ctx, m))
@@ -62,7 +68,7 @@ func (b *Bot) messageHandler() func(*discordgo.Session, *discordgo.MessageCreate
 			errors.Wrap(ctx, b.service.HandlePause(ctx, m, g))
 		case "resume":
 			errors.Wrap(ctx, b.service.HandleResume(ctx, m, g))
-		case "stop":
+		case "stop", "s":
 			errors.Wrap(ctx, b.service.HandleStop(ctx, m, g))
 		case "next":
 			errors.Wrap(ctx, b.service.HandleNext(ctx, m, g))

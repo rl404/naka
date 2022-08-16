@@ -25,7 +25,7 @@ func New(cacher cache.Cacher) *Cache {
 // SetSearch to set search prompt.
 func (c *Cache) SetSearch(ctx context.Context, userID string, data entity.Search) error {
 	key := utils.GetKey("prompt", "search", userID)
-	if err := c.cacher.Set(key, data, time.Minute); err != nil {
+	if err := c.cacher.Set(ctx, key, data, time.Minute); err != nil {
 		return errors.Wrap(ctx, err)
 	}
 	return nil
@@ -34,12 +34,12 @@ func (c *Cache) SetSearch(ctx context.Context, userID string, data entity.Search
 // GetSearch to get search prompt.
 func (c *Cache) GetSearch(ctx context.Context, userID string) (data *entity.Search) {
 	key := utils.GetKey("prompt", "search", userID)
-	c.cacher.Get(key, &data)
+	c.cacher.Get(ctx, key, &data)
 	return data
 }
 
 // DeleteSearch to delete search prompt.
 func (c *Cache) DeleteSearch(ctx context.Context, userID string) error {
 	key := utils.GetKey("prompt", "search", userID)
-	return errors.Wrap(ctx, c.cacher.Delete(key))
+	return errors.Wrap(ctx, c.cacher.Delete(ctx, key))
 }
