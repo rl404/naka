@@ -9,7 +9,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.7.16-0.20220814133111-5a2a7203e451
 	github.com/newrelic/go-agent/v3 v3.18.0
-	github.com/rl404/fairy v0.18.0
+	github.com/rl404/fairy v0.19.0
 	github.com/spf13/cobra v1.5.0
 	google.golang.org/api v0.92.0
 )

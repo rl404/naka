@@ -8,6 +8,7 @@ import (
 
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/fairy/cache"
+	_nr "github.com/rl404/fairy/log/newrelic"
 	nrCache "github.com/rl404/fairy/monitoring/newrelic/cache"
 	_bot "github.com/rl404/naka/internal/delivery/bot"
 	discordRepository "github.com/rl404/naka/internal/domain/discord/repository"
@@ -36,11 +37,13 @@ func bot() error {
 		newrelic.ConfigAppName(cfg.Newrelic.Name),
 		newrelic.ConfigLicense(cfg.Newrelic.LicenseKey),
 		newrelic.ConfigDistributedTracerEnabled(true),
+		newrelic.ConfigAppLogForwardingEnabled(true),
 	)
 	if err != nil {
 		utils.Error(err.Error())
 	} else {
 		defer nrApp.Shutdown(10 * time.Second)
+		utils.AddLog(_nr.NewFromNewrelicApp(nrApp, _nr.ErrorLevel))
 		utils.Info("newrelic initialized")
 	}
 
