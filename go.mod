@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.18.1
 	github.com/rl404/fairy v0.20.0
 	github.com/spf13/cobra v1.5.0
-	google.golang.org/api v0.93.0
+	google.golang.org/api v0.94.0
 )
 
 require (
@@ -46,7 +46,7 @@ require (
 	go.uber.org/zap v1.22.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234 // indirect
-	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7 // indirect
+	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
