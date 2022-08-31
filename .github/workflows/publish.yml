@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '*'
+
 jobs:
   publish_image:
     name: Build and push naka image
@@ -44,3 +45,19 @@ jobs:
             rl404/naka:${{ env.IMG_TAG }}
             ghcr.io/rl404/naka:latest
             ghcr.io/rl404/naka:${{ env.IMG_TAG }}
+
+      - name: Auth gcloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Setup GKE
+        uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          project_id: ${{ secrets.GKE_PROJECT_ID }}
+          location: ${{ secrets.GKE_LOCATION }}
+      - name: Deploy
+        run: |
+          kubectl set image deployment ${{ secrets.GKE_DEPLOYMENT_NAME }} ${{ secrets.GKE_CONTAINER_NAME }}=rl404/naka:${{ env.IMG_TAG }}
