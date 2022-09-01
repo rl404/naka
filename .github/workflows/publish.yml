@@ -60,4 +60,6 @@ jobs:
           location: ${{ secrets.GKE_LOCATION }}
       - name: Deploy
         run: |
+          kubectl get deployment
+          kubectl describe deployment ${{ secrets.GKE_DEPLOYMENT_NAME }}
           kubectl set image deployment ${{ secrets.GKE_DEPLOYMENT_NAME }} ${{ secrets.GKE_CONTAINER_NAME }}=rl404/naka:${{ env.IMG_TAG }}
