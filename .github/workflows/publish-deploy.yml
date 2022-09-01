@@ -9,16 +9,20 @@ jobs:
   publish_image:
     name: Build and push naka image
     runs-on: ubuntu-latest
+    outpus:
+      img_tag: ${{ steps.tag.outputs.img_tag }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
       - name: Remove 'v' from tag
+        id: tag
         env:
           github_ref: ${{ github.ref }}
         run: |
           github_ref=${github_ref##*/}
           github_ref=${github_ref/v/}
           echo "IMG_TAG=${github_ref}" >> $GITHUB_ENV
+          echo "::set-output name=img_tag::${github_ref}"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -64,4 +68,4 @@ jobs:
           location: ${{ secrets.GKE_LOCATION }}
       - name: Deploy
         run: |
-          kubectl set image deployment ${{ secrets.GKE_DEPLOYMENT_NAME }} ${{ secrets.GKE_CONTAINER_NAME }}=rl404/naka:${{ env.IMG_TAG }}
+          kubectl set image deployment ${{ secrets.GKE_DEPLOYMENT_NAME }} ${{ secrets.GKE_CONTAINER_NAME }}=rl404/naka:${{ needs.publish_image.outputs.img_tag }}
