@@ -9,7 +9,7 @@ jobs:
   publish_image:
     name: Build and push naka image
     runs-on: ubuntu-latest
-    outpus:
+    outputs:
       img_tag: ${{ steps.tag.outputs.img_tag }}
     steps:
       - name: Check out code into the Go module directory
