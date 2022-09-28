@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.19.2
 	github.com/rl404/fairy v0.20.0
 	github.com/spf13/cobra v1.5.0
-	google.golang.org/api v0.97.0
+	google.golang.org/api v0.98.0
 )
 
 require (
