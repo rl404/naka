@@ -7,7 +7,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kkdai/youtube/v2 v2.7.16-0.20220814133111-5a2a7203e451
+	github.com/kkdai/youtube/v2 v2.7.18
 	github.com/newrelic/go-agent/v3 v3.20.3
 	github.com/rl404/fairy v0.22.0
 	github.com/spf13/cobra v1.6.1
@@ -23,7 +23,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.7.0 // indirect
-	github.com/dop251/goja v0.0.0-20220815083517-0c74f9139fd6 // indirect
+	github.com/dop251/goja v0.0.0-20221115122301-6c0d9883792e // indirect
 	github.com/elastic/go-elasticsearch/v7 v7.17.1 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
