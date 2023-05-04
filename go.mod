@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.21.1
 	github.com/rl404/fairy v0.22.0
 	github.com/spf13/cobra v1.7.0
-	google.golang.org/api v0.120.0
+	google.golang.org/api v0.121.0
 )
 
 require (
@@ -30,7 +30,7 @@ require (
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/s2a-go v0.1.2 // indirect
+	github.com/google/s2a-go v0.1.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.8.0 // indirect
