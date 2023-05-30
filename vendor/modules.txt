@@ -128,7 +128,7 @@ github.com/jonas747/ogg
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
-# github.com/kkdai/youtube/v2 v2.8.0
+# github.com/kkdai/youtube/v2 v2.8.1
 ## explicit; go 1.19
 github.com/kkdai/youtube/v2
 # github.com/mattn/go-colorable v0.1.13
