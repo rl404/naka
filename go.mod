@@ -9,7 +9,7 @@ require (
 	github.com/jonas747/dca/v2 v2.0.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.8.1
-	github.com/newrelic/go-agent/v3 v3.23.0
+	github.com/newrelic/go-agent/v3 v3.23.1
 	github.com/rl404/fairy v0.22.1
 	github.com/spf13/cobra v1.7.0
 	google.golang.org/api v0.129.0
