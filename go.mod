@@ -5,12 +5,12 @@ go 1.17
 require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/joho/godotenv v1.5.1
-	github.com/jonas747/dca/v2 v2.0.0
+	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/jonas747/dca/v2 v2.0.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.8.1
 	github.com/newrelic/go-agent/v3 v3.23.1
-	github.com/rl404/fairy v0.22.2
+	github.com/rl404/fairy v0.22.3
 	github.com/spf13/cobra v1.7.0
 	google.golang.org/api v0.130.0
 )
@@ -30,6 +30,7 @@ require (
 	github.com/elastic/go-elasticsearch/v7 v7.17.10 // indirect
 	github.com/elastic/go-elasticsearch/v8 v8.8.2 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
+	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
