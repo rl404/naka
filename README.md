@@ -19,6 +19,7 @@ Naka is a discord bot to play song from youtube.
   - Delete queue.
 
 ## Requirement
+
 - [Discord bot](https://discordpy.readthedocs.io/en/latest/discord.html) and its token
 - [Go](https://golang.org/)
 - [Youtube API key](https://developers.google.com/youtube/v3/getting-started)
@@ -28,31 +29,34 @@ Naka is a discord bot to play song from youtube.
 ## Steps
 
 1. Git clone this repo.
-  ```bash
-  git clone github.com/rl404/naka
-  ```
+
+```bash
+git clone github.com/rl404/naka
+```
+
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
 
-Env | Default | Description
---- | :---: | ---
-`NAKA_DISCORD_TOKEN`* | | Discord bot token.
-`NAKA_DISCORD_PREFIX` | `=` | Discord bot prefix command.
-`NAKA_CACHE_DIALECT` | `inmemory` | Cache type (`inmemory`, `redis`, `memcache`).
-`NAKA_CACHE_ADDRESS` | | Cache address.
-`NAKA_CACHE_PASSWORD` | | Cache password.
-`NAKA_CACHE_TIME` | `24h` | Cache duration.
-`NAKA_YOUTUBE_KEY`* | | Youtube API key.
-
+| Env                    |  Default   | Description                                   |
+| ---------------------- | :--------: | --------------------------------------------- |
+| `NAKA_DISCORD_TOKEN`\* |            | Discord bot token.                            |
+| `NAKA_DISCORD_PREFIX`  |    `=`     | Discord bot prefix command.                   |
+| `NAKA_CACHE_DIALECT`   | `inmemory` | Cache type (`inmemory`, `redis`, `memcache`). |
+| `NAKA_CACHE_ADDRESS`   |            | Cache address.                                |
+| `NAKA_CACHE_PASSWORD`  |            | Cache password.                               |
+| `NAKA_CACHE_TIME`      |   `24h`    | Cache duration.                               |
+| `NAKA_YOUTUBE_KEY`\*   |            | Youtube API key.                              |
 
 3. Run.
-  ```bash
-  make
 
-  # or using docker
-  make docker
-  # to stop docker
-  make docker-stop
-  ```
+```bash
+make
+
+# or using docker
+make docker
+# to stop docker
+make docker-stop
+```
+
 4. Invite the bot to your server.
 5. Join a voice channel.
 6. Try `=help`.

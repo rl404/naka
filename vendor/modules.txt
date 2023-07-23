@@ -658,7 +658,7 @@ github.com/elastic/go-elasticsearch/v8/typedapi/watcher/stop
 github.com/elastic/go-elasticsearch/v8/typedapi/watcher/updatesettings
 github.com/elastic/go-elasticsearch/v8/typedapi/xpack/info
 github.com/elastic/go-elasticsearch/v8/typedapi/xpack/usage
-# github.com/go-chi/chi/v5 v5.0.8
+# github.com/go-chi/chi/v5 v5.0.10
 ## explicit; go 1.14
 github.com/go-chi/chi/v5
 github.com/go-chi/chi/v5/middleware
@@ -764,7 +764,7 @@ github.com/redis/go-redis/v9/internal/pool
 github.com/redis/go-redis/v9/internal/proto
 github.com/redis/go-redis/v9/internal/rand
 github.com/redis/go-redis/v9/internal/util
-# github.com/rl404/fairy v0.22.3
+# github.com/rl404/fairy v0.23.0
 ## explicit; go 1.17
 github.com/rl404/fairy/cache
 github.com/rl404/fairy/cache/bigcache

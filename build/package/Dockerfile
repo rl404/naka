@@ -4,7 +4,7 @@ LABEL stage="naka_builder"
 WORKDIR /naka
 COPY . .
 WORKDIR /naka/cmd/naka
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -mod vendor -o naka
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o naka
 
 # New stage from scratch
 FROM alpine:3.18
