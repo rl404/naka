@@ -3,7 +3,7 @@ name: publish & deploy
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   publish_image:
