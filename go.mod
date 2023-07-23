@@ -9,7 +9,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.8.1
 	github.com/newrelic/go-agent/v3 v3.23.1
-	github.com/rl404/fairy v0.22.3
+	github.com/rl404/fairy v0.23.0
 	github.com/spf13/cobra v1.7.0
 	google.golang.org/api v0.131.0
 )
@@ -26,7 +26,7 @@ require (
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
 	github.com/elastic/go-elasticsearch/v8 v8.8.2 // indirect
-	github.com/go-chi/chi/v5 v5.0.8 // indirect
+	github.com/go-chi/chi/v5 v5.0.10 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
