@@ -17,7 +17,7 @@ func (o *lazyObject) className() string {
 	return obj.className()
 }
 
-func (o *lazyObject) typeOf() valueString {
+func (o *lazyObject) typeOf() String {
 	obj := o.create(o.val)
 	o.val.self = obj
 	return obj.typeOf()
@@ -167,24 +167,6 @@ func (o *lazyObject) _putProp(unistring.String, Value, bool, bool, bool) Value {
 
 func (o *lazyObject) _putSym(*Symbol, Value) {
 	panic("cannot use _putSym() in lazy object")
-}
-
-func (o *lazyObject) toPrimitiveNumber() Value {
-	obj := o.create(o.val)
-	o.val.self = obj
-	return obj.toPrimitiveNumber()
-}
-
-func (o *lazyObject) toPrimitiveString() Value {
-	obj := o.create(o.val)
-	o.val.self = obj
-	return obj.toPrimitiveString()
-}
-
-func (o *lazyObject) toPrimitive() Value {
-	obj := o.create(o.val)
-	o.val.self = obj
-	return obj.toPrimitive()
 }
 
 func (o *lazyObject) assertCallable() (call func(FunctionCall) Value, ok bool) {
