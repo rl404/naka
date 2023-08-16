@@ -8,8 +8,8 @@ cloud.google.com/go/compute/metadata
 ## explicit; go 1.16
 github.com/allegro/bigcache/v3
 github.com/allegro/bigcache/v3/queue
-# github.com/bitly/go-simplejson v0.5.0
-## explicit
+# github.com/bitly/go-simplejson v0.5.1
+## explicit; go 1.17
 github.com/bitly/go-simplejson
 # github.com/bradfitz/gomemcache v0.0.0-20230611145640-acc696258285
 ## explicit; go 1.12
@@ -23,11 +23,11 @@ github.com/cespare/xxhash/v2
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
 ## explicit
 github.com/dgryski/go-rendezvous
-# github.com/dlclark/regexp2 v1.9.0
+# github.com/dlclark/regexp2 v1.10.0
 ## explicit; go 1.13
 github.com/dlclark/regexp2
 github.com/dlclark/regexp2/syntax
-# github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079
+# github.com/dop251/goja v0.0.0-20230812105242-81d76064690d
 ## explicit; go 1.16
 github.com/dop251/goja
 github.com/dop251/goja/ast
@@ -677,7 +677,7 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/google/pprof v0.0.0-20230406165453-00490a63f317
+# github.com/google/pprof v0.0.0-20230811205829-9131a7e9cc17
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/google/s2a-go v0.1.5
@@ -735,8 +735,8 @@ github.com/jonas747/ogg
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
-# github.com/kkdai/youtube/v2 v2.8.1
-## explicit; go 1.19
+# github.com/kkdai/youtube/v2 v2.8.2
+## explicit; go 1.20
 github.com/kkdai/youtube/v2
 # github.com/mattn/go-colorable v0.1.13
 ## explicit; go 1.15

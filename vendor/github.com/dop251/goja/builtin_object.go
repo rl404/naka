@@ -462,6 +462,11 @@ func (r *Runtime) objectproto_toString(call FunctionCall) Value {
 		return stringObjectUndefined
 	default:
 		obj := o.ToObject(r)
+		if o, ok := obj.self.(*objectGoReflect); ok {
+			if toString := o.toString; toString != nil {
+				return toString()
+			}
+		}
 		var clsName string
 		if isArray(obj) {
 			clsName = classArray
@@ -469,7 +474,7 @@ func (r *Runtime) objectproto_toString(call FunctionCall) Value {
 			clsName = obj.self.className()
 		}
 		if tag := obj.self.getSym(SymToStringTag, nil); tag != nil {
-			if str, ok := tag.(valueString); ok {
+			if str, ok := tag.(String); ok {
 				clsName = str.String()
 			}
 		}
