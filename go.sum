@@ -138,6 +138,8 @@ github.com/kkdai/youtube/v2 v2.8.1 h1:8I1WYzJSWGFXIR18F/yJ+8HGxplPXNYW8+sQR9EKxZ
 github.com/kkdai/youtube/v2 v2.8.1/go.mod h1:FMx1e/QBA+GBoRpwLAYJoJZcPE+P0yeA2ckAbPCHZow=
 github.com/kkdai/youtube/v2 v2.8.2 h1:LSwTr9cDS7ROhb9Wn2WBxl1V7L+b3peOEg2Xi5M/Uk0=
 github.com/kkdai/youtube/v2 v2.8.2/go.mod h1:VPQwegyWSjwNxrg5da07u2YjX7bliRG6rPzZr+eb/pc=
+github.com/kkdai/youtube/v2 v2.8.3 h1:zIzXZXsrMhy+ryKbm0VJYPPbY1OIf0n5L4s0UweIGCE=
+github.com/kkdai/youtube/v2 v2.8.3/go.mod h1:VPQwegyWSjwNxrg5da07u2YjX7bliRG6rPzZr+eb/pc=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=
