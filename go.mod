@@ -2,8 +2,6 @@ module github.com/rl404/naka
 
 go 1.21
 
-toolchain go1.21.3
-
 require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/joho/godotenv v1.5.1
