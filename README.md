@@ -36,15 +36,15 @@ git clone github.com/rl404/naka
 
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
 
-| Env                    |  Default   | Description                                   |
-| ---------------------- | :--------: | --------------------------------------------- |
-| `NAKA_DISCORD_TOKEN`\* |            | Discord bot token.                            |
-| `NAKA_DISCORD_PREFIX`  |    `=`     | Discord bot prefix command.                   |
-| `NAKA_CACHE_DIALECT`   | `inmemory` | Cache type (`inmemory`, `redis`, `memcache`). |
-| `NAKA_CACHE_ADDRESS`   |            | Cache address.                                |
-| `NAKA_CACHE_PASSWORD`  |            | Cache password.                               |
-| `NAKA_CACHE_TIME`      |   `24h`    | Cache duration.                               |
-| `NAKA_YOUTUBE_KEY`\*   |            | Youtube API key.                              |
+| Env                    |  Default   | Description                       |
+| ---------------------- | :--------: | --------------------------------- |
+| `NAKA_DISCORD_TOKEN`\* |            | Discord bot token.                |
+| `NAKA_DISCORD_PREFIX`  |    `=`     | Discord bot prefix command.       |
+| `NAKA_CACHE_DIALECT`   | `inmemory` | Cache type (`inmemory`, `redis`). |
+| `NAKA_CACHE_ADDRESS`   |            | Cache address.                    |
+| `NAKA_CACHE_PASSWORD`  |            | Cache password.                   |
+| `NAKA_CACHE_TIME`      |   `24h`    | Cache duration.                   |
+| `NAKA_YOUTUBE_KEY`\*   |            | Youtube API key.                  |
 
 3. Run.
 
