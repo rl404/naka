@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/errors"
 )
 
@@ -20,7 +21,7 @@ func (c *Client) JoinVoiceChannel(ctx context.Context, m *discordgo.MessageCreat
 			// Join voice channel.
 			vc, err := c.session.ChannelVoiceJoin(g.ID, vs.ChannelID, false, false)
 			if err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			c.voices[g.ID].Lock()
@@ -34,7 +35,7 @@ func (c *Client) JoinVoiceChannel(ctx context.Context, m *discordgo.MessageCreat
 	}
 
 	if !c.voices[g.ID].isInVoiceChannel {
-		return errors.Wrap(ctx, errors.ErrNotInVC)
+		return stack.Wrap(ctx, errors.ErrNotInVC)
 	}
 
 	return nil
@@ -49,7 +50,7 @@ func (c *Client) LeaveVoiceChannel(ctx context.Context, m *discordgo.MessageCrea
 
 	// Leave voice channel.
 	if err := c.voices[g.ID].voice.Disconnect(); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	c.voices[g.ID].Lock()

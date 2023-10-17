@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/rl404/fairy/cache"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/domain/queue/entity"
-	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
 )
 
@@ -29,7 +29,7 @@ func (c *Cache) getQueue(ctx context.Context, gID string) (data *entity.Queue) {
 
 func (c *Cache) setQueue(ctx context.Context, gID string, data entity.Queue) error {
 	key := utils.GetKey("queue", gID)
-	return errors.Wrap(ctx, c.cacher.Set(ctx, key, data))
+	return stack.Wrap(ctx, c.cacher.Set(ctx, key, data))
 }
 
 // GetList to get list.
@@ -54,7 +54,7 @@ func (c *Cache) Add(ctx context.Context, gID string, data entity.Song) error {
 		q = &entity.Queue{}
 	}
 	q.Songs = append(q.Songs, data)
-	return errors.Wrap(ctx, c.setQueue(ctx, gID, *q))
+	return stack.Wrap(ctx, c.setQueue(ctx, gID, *q))
 }
 
 // Remove to remove song from queue.
@@ -80,13 +80,13 @@ func (c *Cache) Remove(ctx context.Context, gID string, is ...int) error {
 		}
 	}
 
-	return errors.Wrap(ctx, c.setQueue(ctx, gID, newQ))
+	return stack.Wrap(ctx, c.setQueue(ctx, gID, newQ))
 }
 
 // Purge to delete queue.
 func (c *Cache) Purge(ctx context.Context, gID string) error {
 	key := utils.GetKey("queue", gID)
-	return errors.Wrap(ctx, c.cacher.Delete(ctx, key))
+	return stack.Wrap(ctx, c.cacher.Delete(ctx, key))
 }
 
 // GetIndex to get index.
@@ -117,5 +117,5 @@ func (c *Cache) SetIndex(ctx context.Context, gID string, i int) error {
 	if i < 0 {
 		q.Index = 0
 	}
-	return errors.Wrap(ctx, c.setQueue(ctx, gID, *q))
+	return stack.Wrap(ctx, c.setQueue(ctx, gID, *q))
 }

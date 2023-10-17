@@ -11,6 +11,7 @@ import (
 
 	"github.com/kkdai/youtube/v2"
 	"github.com/newrelic/go-agent/v3/newrelic"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/domain/youtube/entity"
 	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
@@ -67,7 +68,7 @@ func (c *Client) IsURLValid(url_ string) bool {
 func (c *Client) GetIDFromURL(ctx context.Context, url string) (string, error) {
 	id, err := youtube.ExtractVideoID(url)
 	if err != nil {
-		return "", errors.Wrap(ctx, errors.ErrInvalidYoutubeURL, err)
+		return "", stack.Wrap(ctx, err, errors.ErrInvalidYoutubeURL)
 	}
 	return id, nil
 }
@@ -76,14 +77,14 @@ func (c *Client) GetIDFromURL(ctx context.Context, url string) (string, error) {
 func (c *Client) GetSourceURLByID(ctx context.Context, id string) (string, error) {
 	video, err := c.client.GetVideoContext(ctx, id)
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 
 	format := video.Formats.WithAudioChannels()
 
 	url, err := c.client.GetStreamURLContext(ctx, video, &format[0])
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 
 	return url, nil
@@ -99,7 +100,7 @@ func (c *Client) GetVideos(ctx context.Context, query string, limit int64) ([]en
 		Context(ctx).
 		Do()
 	if err != nil {
-		return nil, errors.Wrap(ctx, err)
+		return nil, stack.Wrap(ctx, err)
 	}
 
 	res := make([]entity.Video, len(response.Items))
@@ -121,11 +122,11 @@ func (c *Client) GetVideo(ctx context.Context, id string) (*entity.Video, error)
 		Context(ctx).
 		Do()
 	if err != nil {
-		return nil, errors.Wrap(ctx, err)
+		return nil, stack.Wrap(ctx, err)
 	}
 
 	if len(response.Items) == 0 {
-		return nil, errors.Wrap(ctx, errors.ErrInvalidYoutubeID)
+		return nil, stack.Wrap(ctx, errors.ErrInvalidYoutubeID)
 	}
 
 	return &entity.Video{

@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/rl404/naka/internal/errors"
+	"github.com/rl404/fairy/errors/stack"
 )
 
 // Client is discord client.
@@ -57,12 +57,12 @@ func (c *Client) AddReactionHandler(handler func(*discordgo.Session, *discordgo.
 func (c *Client) GetGuildByChannelID(ctx context.Context, cID string) (*discordgo.Guild, error) {
 	ch, err := c.session.State.Channel(cID)
 	if err != nil {
-		return nil, errors.Wrap(ctx, err)
+		return nil, stack.Wrap(ctx, err)
 	}
 
 	g, err := c.session.State.Guild(ch.GuildID)
 	if err != nil {
-		return nil, errors.Wrap(ctx, err)
+		return nil, stack.Wrap(ctx, err)
 	}
 
 	return g, nil
@@ -72,7 +72,7 @@ func (c *Client) GetGuildByChannelID(ctx context.Context, cID string) (*discordg
 func (c *Client) SendMessage(ctx context.Context, cID, content string) (string, error) {
 	m, err := c.session.ChannelMessageSend(cID, content)
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 	return m.ID, nil
 }
@@ -81,7 +81,7 @@ func (c *Client) SendMessage(ctx context.Context, cID, content string) (string, 
 func (c *Client) SendMessageEmbed(ctx context.Context, cID string, content *discordgo.MessageEmbed) (string, error) {
 	m, err := c.session.ChannelMessageSendEmbed(cID, content)
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 	return m.ID, nil
 }
@@ -90,7 +90,7 @@ func (c *Client) SendMessageEmbed(ctx context.Context, cID string, content *disc
 func (c *Client) EditMessage(ctx context.Context, cID, mID, content string) (string, error) {
 	m, err := c.session.ChannelMessageEdit(cID, mID, content)
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 	return m.ID, nil
 }
@@ -99,7 +99,7 @@ func (c *Client) EditMessage(ctx context.Context, cID, mID, content string) (str
 func (c *Client) EditMessageEmbed(ctx context.Context, cID, mID string, content *discordgo.MessageEmbed) (string, error) {
 	m, err := c.session.ChannelMessageEditEmbed(cID, mID, content)
 	if err != nil {
-		return "", errors.Wrap(ctx, err)
+		return "", stack.Wrap(ctx, err)
 	}
 	return m.ID, nil
 }

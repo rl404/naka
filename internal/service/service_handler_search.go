@@ -6,16 +6,16 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rl404/fairy/errors/stack"
 	promptEntity "github.com/rl404/naka/internal/domain/prompt/entity"
 	queueEntity "github.com/rl404/naka/internal/domain/queue/entity"
 	"github.com/rl404/naka/internal/domain/template/entity"
-	"github.com/rl404/naka/internal/errors"
 )
 
 func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g *discordgo.Guild, args []string, play bool) error {
 	if len(args) == 0 {
 		_, err := s.discord.SendMessage(ctx, m.ChannelID, entity.InvalidSearchQuery)
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// If using youtube url.
@@ -28,25 +28,25 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 			videoID, err := s.youtube.GetIDFromURL(ctx, arg)
 			if err != nil {
 				if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.InvalidYoutubeURL); err != nil {
-					return errors.Wrap(ctx, err)
+					return stack.Wrap(ctx, err)
 				}
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			sourceURL, err := s.youtube.GetSourceURLByID(ctx, videoID)
 			if err != nil {
 				if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.InvalidYoutubeURL); err != nil {
-					return errors.Wrap(ctx, err)
+					return stack.Wrap(ctx, err)
 				}
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			video, err := s.youtube.GetVideo(ctx, videoID)
 			if err != nil {
 				if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.InvalidYoutubeURL); err != nil {
-					return errors.Wrap(ctx, err)
+					return stack.Wrap(ctx, err)
 				}
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			if err := s.queue.Add(ctx, g.ID, queueEntity.Song{
@@ -61,7 +61,7 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 				Dislike:      video.Dislike,
 				SourceURL:    sourceURL,
 			}); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			if _, err := s.discord.SendMessageEmbed(ctx, m.ChannelID, s.template.GetAddQueue(entity.Video{
@@ -76,12 +76,12 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 				Dislike:      video.Dislike,
 				QueueI:       len(s.queue.GetList(ctx, g.ID)),
 			})); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 		}
 
 		if play {
-			return errors.Wrap(ctx, s.play(ctx, m, g))
+			return stack.Wrap(ctx, s.play(ctx, m, g))
 		}
 
 		return nil
@@ -91,9 +91,9 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 	videos, err := s.youtube.GetVideos(ctx, strings.Join(args, " "), 10)
 	if err != nil {
 		if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.InvalidSearchQuery); err != nil {
-			return errors.Wrap(ctx, err)
+			return stack.Wrap(ctx, err)
 		}
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	result := make([]entity.Video, len(videos))
@@ -105,7 +105,7 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 
 	mID, err := s.discord.SendMessage(ctx, m.ChannelID, s.template.GetSearch(result))
 	if err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	if len(videos) == 0 {
@@ -117,7 +117,7 @@ func (s *service) searchSong(ctx context.Context, m *discordgo.MessageCreate, g 
 		Play: play,
 		IDs:  ids,
 	}); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	go func() {

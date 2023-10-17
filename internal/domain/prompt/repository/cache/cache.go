@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/rl404/fairy/cache"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/domain/prompt/entity"
-	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
 )
 
@@ -26,7 +26,7 @@ func New(cacher cache.Cacher) *Cache {
 func (c *Cache) SetSearch(ctx context.Context, userID string, data entity.Search) error {
 	key := utils.GetKey("prompt", "search", userID)
 	if err := c.cacher.Set(ctx, key, data, time.Minute); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 	return nil
 }
@@ -41,5 +41,5 @@ func (c *Cache) GetSearch(ctx context.Context, userID string) (data *entity.Sear
 // DeleteSearch to delete search prompt.
 func (c *Cache) DeleteSearch(ctx context.Context, userID string) error {
 	key := utils.GetKey("prompt", "search", userID)
-	return errors.Wrap(ctx, c.cacher.Delete(ctx, key))
+	return stack.Wrap(ctx, c.cacher.Delete(ctx, key))
 }
