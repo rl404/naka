@@ -7,7 +7,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/jonas747/dca"
-	"github.com/rl404/naka/internal/errors"
+	"github.com/rl404/fairy/errors/stack"
 )
 
 type voice struct {
@@ -123,7 +123,7 @@ func (c *Client) SetPlaying(ctx context.Context, gID string, value bool) error {
 	c.Lock()
 	defer c.Unlock()
 	c.voices[gID].isPlaying = value
-	return errors.Wrap(ctx, c.voices[gID].voice.Speaking(value))
+	return stack.Wrap(ctx, c.voices[gID].voice.Speaking(value))
 }
 
 // Stop to stop.
@@ -162,7 +162,7 @@ func (c *Client) Stream(ctx context.Context, gID, path string) (err error) {
 
 	c.voices[gID].encodeSession, err = dca.EncodeFile(path, options)
 	if err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	defer c.voices[gID].encodeSession.Cleanup()
@@ -173,7 +173,7 @@ func (c *Client) Stream(ctx context.Context, gID, path string) (err error) {
 
 	err = <-done
 	if err != nil && err != io.EOF {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	return nil

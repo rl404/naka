@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/rl404/fairy/cache"
 	_nr "github.com/rl404/fairy/log/newrelic"
 	nrCache "github.com/rl404/fairy/monitoring/newrelic/cache"
 	_bot "github.com/rl404/naka/internal/delivery/bot"
@@ -23,6 +22,7 @@ import (
 	youtubeClient "github.com/rl404/naka/internal/domain/youtube/repository/client"
 	"github.com/rl404/naka/internal/service"
 	"github.com/rl404/naka/internal/utils"
+	"github.com/rl404/naka/pkg/cache"
 )
 
 func bot() error {

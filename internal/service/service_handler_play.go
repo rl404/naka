@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/domain/template/entity"
-	"github.com/rl404/naka/internal/errors"
 )
 
 // HandlePlay to handle play.
@@ -16,7 +16,7 @@ func (s *service) HandlePlay(ctx context.Context, m *discordgo.MessageCreate, g 
 	}
 
 	// Search song.
-	return errors.Wrap(ctx, s.searchSong(ctx, m, g, args, true))
+	return stack.Wrap(ctx, s.searchSong(ctx, m, g, args, true))
 }
 
 func (s *service) play(ctx context.Context, m *discordgo.MessageCreate, g *discordgo.Guild) error {
@@ -28,14 +28,14 @@ func (s *service) play(ctx context.Context, m *discordgo.MessageCreate, g *disco
 	// Check queue.
 	if s.queue.IsEmpty(ctx, g.ID) {
 		if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.EmptyQueue); err != nil {
-			return errors.Wrap(ctx, err)
+			return stack.Wrap(ctx, err)
 		}
 		return nil
 	}
 
 	// Join channel.
 	if err := s.HandleJoin(ctx, m, g); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// Loop the queue.
@@ -50,7 +50,7 @@ func (s *service) play(ctx context.Context, m *discordgo.MessageCreate, g *disco
 
 			if len(queue) == 0 || i >= len(queue) {
 				if _, err := s.discord.SendMessage(ctx, m.ChannelID, entity.EndQueue); err != nil {
-					return errors.Wrap(ctx, err)
+					return stack.Wrap(ctx, err)
 				}
 				return nil
 			}
@@ -70,16 +70,16 @@ func (s *service) play(ctx context.Context, m *discordgo.MessageCreate, g *disco
 				QueueI:       i + 1,
 				QueueCnt:     len(queue),
 			})); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			if err := s.discord.SetPlaying(ctx, g.ID, true); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			// Start stream.
 			if err := s.discord.Stream(ctx, g.ID, song.SourceURL); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			// Go next queue.
@@ -89,7 +89,7 @@ func (s *service) play(ctx context.Context, m *discordgo.MessageCreate, g *disco
 			s.discord.SetDisableAutoNext(g.ID, false)
 
 			if err := s.discord.SetPlaying(ctx, g.ID, false); err != nil {
-				return errors.Wrap(ctx, err)
+				return stack.Wrap(ctx, err)
 			}
 
 			if s.discord.GetStopped(g.ID) {

@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/naka/internal/domain/template/entity"
-	"github.com/rl404/naka/internal/errors"
 )
 
 // HandleQueue to handle queue.
@@ -23,10 +23,10 @@ func (s *service) HandleQueue(ctx context.Context, m *discordgo.MessageCreate, g
 		}
 
 		_, err := s.discord.SendMessage(ctx, m.ChannelID, s.template.GetQueue(i, result))
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 
 	}
 
 	// Search song.
-	return errors.Wrap(ctx, s.searchSong(ctx, m, g, args, false))
+	return stack.Wrap(ctx, s.searchSong(ctx, m, g, args, false))
 }
