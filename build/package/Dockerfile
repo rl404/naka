@@ -7,7 +7,7 @@ WORKDIR /naka/cmd/naka
 RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o naka
 
 # New stage from scratch
-FROM jrottenberg/ffmpeg:3-alpine
+FROM jrottenberg/ffmpeg:4-alpine
 LABEL stage="naka_binary"
 COPY --from=go_builder /naka/cmd/naka/naka naka
 ENTRYPOINT []
