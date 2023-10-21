@@ -7,7 +7,7 @@ WORKDIR /naka/cmd/naka
 RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o naka
 
 # New stage from scratch
-FROM alpine:3.18
+FROM jrottenberg/ffmpeg:3-alpine
 LABEL stage="naka_binary"
-RUN apk add --no-cache ffmpeg
 COPY --from=go_builder /naka/cmd/naka/naka naka
+ENTRYPOINT []
