@@ -10,7 +10,7 @@ require (
 	github.com/kkdai/youtube/v2 v2.9.0
 	github.com/newrelic/go-agent/v3 v3.27.0
 	github.com/rl404/fairy v0.25.2
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	google.golang.org/api v0.149.0
 )
 
