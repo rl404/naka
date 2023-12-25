@@ -117,6 +117,20 @@ type Format struct {
 		Start string `json:"start"`
 		End   string `json:"end"`
 	} `json:"indexRange"`
+
+	// AudioTrack is only available for videos with multiple audio track languages
+	AudioTrack *struct {
+		DisplayName    string `json:"displayName"`
+		ID             string `json:"id"`
+		AudioIsDefault bool   `json:"audioIsDefault"`
+	}
+}
+
+func (f *Format) LanguageDisplayName() string {
+	if f.AudioTrack == nil {
+		return ""
+	}
+	return f.AudioTrack.DisplayName
 }
 
 type Thumbnails []Thumbnail

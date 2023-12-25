@@ -7,7 +7,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kkdai/youtube/v2 v2.9.0
+	github.com/kkdai/youtube/v2 v2.10.0
 	github.com/newrelic/go-agent/v3 v3.29.0
 	github.com/rl404/fairy v0.25.2
 	github.com/spf13/cobra v1.8.0
@@ -22,7 +22,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/dop251/goja v0.0.0-20230828202809-3dbe69dd2b8e // indirect
+	github.com/dop251/goja v0.0.0-20231027120936-b396bb4c349d // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-chi/chi/v5 v5.0.10 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/pprof v0.0.0-20230907193218-d3ddc7976beb // indirect
+	github.com/google/pprof v0.0.0-20231101202521-4ca4178f5c7a // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
