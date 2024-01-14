@@ -15,7 +15,7 @@ func (s *service) HandleQueue(ctx context.Context, m *discordgo.MessageCreate, g
 		queue := s.queue.GetList(ctx, g.ID)
 		currentIndex := s.queue.GetIndex(ctx, g.ID)
 
-		result := make([]entity.Video, len(queue))
+		result := make([]entity.Video, len(queue)-currentIndex-1)
 
 		resultIndex := 0
 		for i := currentIndex; i < len(queue); i++ {
