@@ -15,18 +15,14 @@ func (s *service) HandleQueue(ctx context.Context, m *discordgo.MessageCreate, g
 		queue := s.queue.GetList(ctx, g.ID)
 		currentIndex := s.queue.GetIndex(ctx, g.ID)
 
-		result := make([]entity.Video, len(queue)-currentIndex-1)
-
-		resultIndex := 0
-		for i := currentIndex; i < len(queue); i++ {
-			result[resultIndex] = entity.Video{
+		result := make([]entity.Video, len(queue)-currentIndex)
+		for i, j := currentIndex, 0; i < len(queue); i, j = i+1, j+1 {
+			result[j] = entity.Video{
 				Title: queue[i].Title,
 			}
-
-			resultIndex++
 		}
 
-		_, err := s.discord.SendMessage(ctx, m.ChannelID, s.template.GetQueue(currentIndex, result))
+		_, err := s.discord.SendMessage(ctx, m.ChannelID, s.template.GetQueue(0, result))
 		return stack.Wrap(ctx, err)
 
 	}
