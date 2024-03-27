@@ -8,10 +8,10 @@ require (
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kkdai/youtube/v2 v2.10.1
-	github.com/newrelic/go-agent/v3 v3.30.0
+	github.com/newrelic/go-agent/v3 v3.31.0
 	github.com/rl404/fairy v0.25.2
 	github.com/spf13/cobra v1.8.0
-	google.golang.org/api v0.171.0
+	google.golang.org/api v0.172.0
 )
 
 require (
@@ -54,7 +54,7 @@ require (
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240314234333-6e1732d8331c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
 	google.golang.org/grpc v1.62.1 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
