@@ -11,7 +11,7 @@ github.com/allegro/bigcache/v3/queue
 # github.com/bitly/go-simplejson v0.5.1
 ## explicit; go 1.17
 github.com/bitly/go-simplejson
-# github.com/bwmarrin/discordgo v0.27.1
+# github.com/bwmarrin/discordgo v0.28.1
 ## explicit; go 1.13
 github.com/bwmarrin/discordgo
 # github.com/cespare/xxhash/v2 v2.2.0
