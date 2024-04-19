@@ -16,8 +16,6 @@ cloud.google.com/go/auth/internal/transport/cert
 # cloud.google.com/go/auth/oauth2adapt v0.2.0
 ## explicit; go 1.19
 cloud.google.com/go/auth/oauth2adapt
-# cloud.google.com/go/compute v1.24.0
-## explicit; go 1.19
 # cloud.google.com/go/compute/metadata v0.3.0
 ## explicit; go 1.19
 cloud.google.com/go/compute/metadata
@@ -241,7 +239,7 @@ golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/nacl/secretbox
 golang.org/x/crypto/salsa20/salsa
-# golang.org/x/net v0.22.0
+# golang.org/x/net v0.23.0
 ## explicit; go 1.18
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
@@ -295,8 +293,6 @@ google.golang.org/api/option/internaloption
 google.golang.org/api/transport/http
 google.golang.org/api/transport/http/internal/propagation
 google.golang.org/api/youtube/v3
-# google.golang.org/appengine v1.6.8
-## explicit; go 1.11
 # google.golang.org/genproto/googleapis/rpc v0.0.0-20240415180920-8c6c420018be
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/code
