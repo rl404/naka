@@ -11,12 +11,12 @@ require (
 	github.com/newrelic/go-agent/v3 v3.32.0
 	github.com/rl404/fairy v0.25.2
 	github.com/spf13/cobra v1.8.0
-	google.golang.org/api v0.176.0
+	google.golang.org/api v0.176.1
 )
 
 require (
-	cloud.google.com/go/auth v0.2.2 // indirect
-	cloud.google.com/go/auth/oauth2adapt v0.2.1 // indirect
+	cloud.google.com/go/auth v0.3.0 // indirect
+	cloud.google.com/go/auth/oauth2adapt v0.2.2 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	github.com/allegro/bigcache/v3 v3.1.0 // indirect
