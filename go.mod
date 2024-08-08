@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.34.0
 	github.com/rl404/fairy v0.25.2
 	github.com/spf13/cobra v1.8.1
-	google.golang.org/api v0.190.0
+	google.golang.org/api v0.191.0
 )
 
 require (
@@ -51,7 +51,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/oauth2 v0.21.0 // indirect
+	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240730163845-b1a4ccb954bf // indirect
