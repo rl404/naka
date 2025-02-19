@@ -12,7 +12,7 @@ require (
 	github.com/kkdai/youtube/v2 v2.10.2
 	github.com/newrelic/go-agent/v3 v3.36.0
 	github.com/rl404/fairy v0.26.0
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 	google.golang.org/api v0.221.0
 )
 
@@ -43,7 +43,7 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/redis/go-redis/v9 v9.6.1 // indirect
 	github.com/rs/zerolog v1.33.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0 // indirect
 	go.opentelemetry.io/otel v1.34.0 // indirect
