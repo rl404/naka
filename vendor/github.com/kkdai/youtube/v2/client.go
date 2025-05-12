@@ -50,6 +50,11 @@ type Client struct {
 	client *clientInfo
 
 	consentID string
+
+	visitorId struct {
+		value   string
+		updated time.Time
+	}
 }
 
 func (c *Client) assureClient() {
@@ -605,6 +610,12 @@ func (c *Client) httpPost(ctx context.Context, url string, body interface{}) (*h
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 
+	if xgoogvisitorid, err := c.getVisitorId(); err != nil {
+		return nil, err
+	} else {
+		req.Header.Set("x-goog-visitor-id", xgoogvisitorid)
+	}
+
 	resp, err := c.httpDo(req)
 	if err != nil {
 		return nil, err
@@ -616,6 +627,57 @@ func (c *Client) httpPost(ctx context.Context, url string, body interface{}) (*h
 	}
 
 	return resp, nil
+}
+
+var VisitorIdMaxAge = 10 * time.Hour
+
+func (c *Client) getVisitorId() (string, error) {
+	var err error
+	if c.visitorId.value == "" || time.Since(c.visitorId.updated) > VisitorIdMaxAge {
+		err = c.refreshVisitorId()
+	}
+
+	return c.visitorId.value, err
+}
+
+func (c *Client) refreshVisitorId() error {
+	const sep = "\nytcfg.set("
+
+	req, err := http.NewRequest(http.MethodGet, "https://www.youtube.com", nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.httpDo(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	_, data1, found := strings.Cut(string(data), sep)
+	if !found {
+		return err
+	}
+	var value struct {
+		InnertubeContext struct {
+			Client struct {
+				VisitorData string
+			}
+		} `json:"INNERTUBE_CONTEXT"`
+	}
+	if err := json.NewDecoder(strings.NewReader(data1)).Decode(&value); err != nil {
+		return err
+	}
+
+	if c.visitorId.value, err = url.PathUnescape(value.InnertubeContext.Client.VisitorData); err != nil {
+		return err
+	}
+
+	c.visitorId.updated = time.Now()
+	return nil
 }
 
 // httpPostBodyBytes reads the whole HTTP body and returns it
