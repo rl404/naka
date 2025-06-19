@@ -13,7 +13,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.39.0
 	github.com/rl404/fairy v0.26.0
 	github.com/spf13/cobra v1.9.1
-	google.golang.org/api v0.237.0
+	google.golang.org/api v0.238.0
 )
 
 require (
