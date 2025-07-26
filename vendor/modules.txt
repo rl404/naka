@@ -1,4 +1,4 @@
-# cloud.google.com/go/auth v0.16.2
+# cloud.google.com/go/auth v0.16.3
 ## explicit; go 1.23.0
 cloud.google.com/go/auth
 cloud.google.com/go/auth/credentials
@@ -100,7 +100,7 @@ github.com/google/uuid
 ## explicit; go 1.23.0
 github.com/googleapis/enterprise-certificate-proxy/client
 github.com/googleapis/enterprise-certificate-proxy/client/util
-# github.com/googleapis/gax-go/v2 v2.14.2
+# github.com/googleapis/gax-go/v2 v2.15.0
 ## explicit; go 1.23.0
 github.com/googleapis/gax-go/v2
 github.com/googleapis/gax-go/v2/apierror
@@ -130,10 +130,10 @@ github.com/kelseyhightower/envconfig
 # github.com/kkdai/youtube/v2 v2.10.4
 ## explicit; go 1.23.0
 github.com/kkdai/youtube/v2
-# github.com/mattn/go-colorable v0.1.13
-## explicit; go 1.15
+# github.com/mattn/go-colorable v0.1.14
+## explicit; go 1.18
 github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.19
+# github.com/mattn/go-isatty v0.0.20
 ## explicit; go 1.15
 github.com/mattn/go-isatty
 # github.com/newrelic/go-agent/v3 v3.40.1
@@ -147,9 +147,10 @@ github.com/newrelic/go-agent/v3/internal/logger
 github.com/newrelic/go-agent/v3/internal/sysinfo
 github.com/newrelic/go-agent/v3/internal/utilization
 github.com/newrelic/go-agent/v3/newrelic
-# github.com/redis/go-redis/v9 v9.6.3
+# github.com/redis/go-redis/v9 v9.11.0
 ## explicit; go 1.18
 github.com/redis/go-redis/v9
+github.com/redis/go-redis/v9/auth
 github.com/redis/go-redis/v9/internal
 github.com/redis/go-redis/v9/internal/hashtag
 github.com/redis/go-redis/v9/internal/hscan
@@ -157,8 +158,8 @@ github.com/redis/go-redis/v9/internal/pool
 github.com/redis/go-redis/v9/internal/proto
 github.com/redis/go-redis/v9/internal/rand
 github.com/redis/go-redis/v9/internal/util
-# github.com/rl404/fairy v0.26.0
-## explicit; go 1.21
+# github.com/rl404/fairy v0.26.1
+## explicit; go 1.24.5
 github.com/rl404/fairy/cache
 github.com/rl404/fairy/cache/inmemory
 github.com/rl404/fairy/cache/nop
@@ -171,7 +172,7 @@ github.com/rl404/fairy/log/nop
 github.com/rl404/fairy/log/zerolog
 github.com/rl404/fairy/monitoring/newrelic/cache
 github.com/rl404/fairy/pubsub
-# github.com/rs/zerolog v1.33.0
+# github.com/rs/zerolog v1.34.0
 ## explicit; go 1.15
 github.com/rs/zerolog
 github.com/rs/zerolog/internal/cbor
@@ -215,7 +216,7 @@ go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
 go.opentelemetry.io/otel/trace/internal/telemetry
 go.opentelemetry.io/otel/trace/noop
-# golang.org/x/crypto v0.39.0
+# golang.org/x/crypto v0.40.0
 ## explicit; go 1.23.0
 golang.org/x/crypto/chacha20
 golang.org/x/crypto/chacha20poly1305
@@ -226,7 +227,7 @@ golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/nacl/secretbox
 golang.org/x/crypto/salsa20/salsa
-# golang.org/x/net v0.41.0
+# golang.org/x/net v0.42.0
 ## explicit; go 1.23.0
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
@@ -247,13 +248,13 @@ golang.org/x/oauth2/google/internal/stsexchange
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.33.0
+# golang.org/x/sys v0.34.0
 ## explicit; go 1.23.0
 golang.org/x/sys/cpu
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 golang.org/x/sys/windows/registry
-# golang.org/x/text v0.26.0
+# golang.org/x/text v0.27.0
 ## explicit; go 1.23.0
 golang.org/x/text/cases
 golang.org/x/text/collate
@@ -268,7 +269,7 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/unicode/rangetable
-# google.golang.org/api v0.242.0
+# google.golang.org/api v0.243.0
 ## explicit; go 1.23.0
 google.golang.org/api/googleapi
 google.golang.org/api/googleapi/transport
@@ -281,7 +282,7 @@ google.golang.org/api/option
 google.golang.org/api/option/internaloption
 google.golang.org/api/transport/http
 google.golang.org/api/youtube/v3
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20250715232539-7130f93afb79
 ## explicit; go 1.23.0
 google.golang.org/genproto/googleapis/rpc/code
 google.golang.org/genproto/googleapis/rpc/errdetails
