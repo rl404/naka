@@ -28,7 +28,7 @@ go run ./cmd/youtubedr
 
 ### Install via Go
 
-Please ensure you have installed Go 1.23 or later.
+Please ensure you have installed Go 1.26 or later.
 
 ```shell
 go install github.com/kkdai/youtube/v2/cmd/youtubedr@latest

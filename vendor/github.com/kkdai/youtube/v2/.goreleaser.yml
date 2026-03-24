@@ -19,3 +19,6 @@ builds:
       - arm64
     flags:
       - -trimpath
+    ignore:
+      - goos: windows
+        goarch: arm

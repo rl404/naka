@@ -1,13 +1,13 @@
 module github.com/rl404/naka
 
-go 1.25.0
+go 1.26
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/joho/godotenv v1.5.1
 	github.com/jonas747/dca v0.0.0-20210930103944-155f5e5f0cc7
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kkdai/youtube/v2 v2.10.5
+	github.com/kkdai/youtube/v2 v2.10.6
 	github.com/newrelic/go-agent/v3 v3.42.0
 	github.com/rl404/fairy v0.26.1
 	github.com/spf13/cobra v1.10.2
@@ -23,13 +23,13 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/dop251/goja v0.0.0-20250125213203-5ef83b82af17 // indirect
+	github.com/dop251/goja v0.0.0-20260311135729-065cd970411c // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
-	github.com/google/pprof v0.0.0-20250208200701-d0013a598941 // indirect
+	github.com/google/pprof v0.0.0-20260302011040-a15ffb7f9dcc // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.14 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/redis/go-redis/v9 v9.11.0 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
-	github.com/spf13/pflag v1.0.9 // indirect
+	github.com/spf13/pflag v1.0.10 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.61.0 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect

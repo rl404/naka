@@ -259,7 +259,14 @@ type objStrRef struct {
 }
 
 func (r *objStrRef) get() Value {
-	return r.base.self.getStr(r.name, r.this)
+	if v := r.base.self.getStr(r.name, r.this); v != nil {
+		return v
+	}
+	if r.binding {
+		rt := r.base.runtime
+		panic(rt.newReferenceError(r.name))
+	}
+	return _undefined
 }
 
 func (r *objStrRef) set(v Value) {
@@ -3382,12 +3389,7 @@ var getValue _getValue
 
 func (_getValue) exec(vm *vm) {
 	ref := vm.refStack[len(vm.refStack)-1]
-	if v := ref.get(); v != nil {
-		vm.push(v)
-	} else {
-		vm.throw(vm.r.newReferenceError(ref.refname()))
-		return
-	}
+	vm.push(nilSafe(ref.get()))
 	vm.pc++
 }
 
@@ -3401,6 +3403,17 @@ func (_putValue) exec(vm *vm) {
 	vm.refStack[l] = nil
 	vm.refStack = vm.refStack[:l]
 	ref.set(vm.stack[vm.sp-1])
+	vm.pc++
+}
+
+type _popRef struct{}
+
+var popRef _popRef
+
+func (_popRef) exec(vm *vm) {
+	l := len(vm.refStack) - 1
+	vm.refStack[l] = nil
+	vm.refStack = vm.refStack[:l]
 	vm.pc++
 }
 
@@ -4282,11 +4295,22 @@ func (b *bindGlobal) exec(vm *vm) {
 	vm.pc++
 }
 
-type jne int32
+type jneP int32
 
-func (j jne) exec(vm *vm) {
+func (j jneP) exec(vm *vm) {
 	vm.sp--
 	if !vm.stack[vm.sp].ToBoolean() {
+		vm.pc += int(j)
+	} else {
+		vm.pc++
+	}
+}
+
+type jeqP int32
+
+func (j jeqP) exec(vm *vm) {
+	vm.sp--
+	if vm.stack[vm.sp].ToBoolean() {
 		vm.pc += int(j)
 	} else {
 		vm.pc++
@@ -4296,17 +4320,6 @@ func (j jne) exec(vm *vm) {
 type jeq int32
 
 func (j jeq) exec(vm *vm) {
-	vm.sp--
-	if vm.stack[vm.sp].ToBoolean() {
-		vm.pc += int(j)
-	} else {
-		vm.pc++
-	}
-}
-
-type jeq1 int32
-
-func (j jeq1) exec(vm *vm) {
 	if vm.stack[vm.sp-1].ToBoolean() {
 		vm.pc += int(j)
 	} else {
@@ -4315,9 +4328,9 @@ func (j jeq1) exec(vm *vm) {
 	}
 }
 
-type jneq1 int32
+type jne int32
 
-func (j jneq1) exec(vm *vm) {
+func (j jne) exec(vm *vm) {
 	if !vm.stack[vm.sp-1].ToBoolean() {
 		vm.pc += int(j)
 	} else {
@@ -4375,12 +4388,73 @@ func (j joptc) exec(vm *vm) {
 	}
 }
 
+type joptdel int32
+
+func (j joptdel) exec(vm *vm) {
+	switch vm.stack[vm.sp-1].(type) {
+	case valueNull, valueUndefined:
+		vm.stack[vm.sp-1] = valueTrue
+		vm.pc += int(j)
+	default:
+		vm.pc++
+	}
+}
+
+type joptdelc int32
+
+func (j joptdelc) exec(vm *vm) {
+	switch vm.stack[vm.sp-1].(type) {
+	case valueNull, valueUndefined, memberUnresolved:
+		vm.sp--
+		vm.stack[vm.sp-1] = valueTrue
+		vm.pc += int(j)
+	default:
+		vm.pc++
+	}
+}
+
+type joptdelP int32
+
+func (j joptdelP) exec(vm *vm) {
+	switch vm.stack[vm.sp-1].(type) {
+	case valueNull, valueUndefined:
+		vm.sp--
+		vm.pc += int(j)
+	default:
+		vm.pc++
+	}
+}
+
+type joptdelcP int32
+
+func (j joptdelcP) exec(vm *vm) {
+	switch vm.stack[vm.sp-1].(type) {
+	case valueNull, valueUndefined, memberUnresolved:
+		vm.sp -= 2
+		vm.pc += int(j)
+	default:
+		vm.pc++
+	}
+}
+
 type jcoalesc int32
 
 func (j jcoalesc) exec(vm *vm) {
 	switch vm.stack[vm.sp-1] {
 	case _undefined, _null:
 		vm.sp--
+		vm.pc++
+	default:
+		vm.pc += int(j)
+	}
+}
+
+type jcoalescP int32
+
+func (j jcoalescP) exec(vm *vm) {
+	vm.sp--
+	switch vm.stack[vm.sp] {
+	case _undefined, _null:
 		vm.pc++
 	default:
 		vm.pc += int(j)
@@ -4708,6 +4782,7 @@ func (leaveTry) exec(vm *vm) {
 		vm.pc = int(tf.finallyPos)
 		tf.finallyPos = -1
 		tf.catchPos = -1
+		vm.sp, vm.stash = int(tf.sp), tf.stash
 	} else {
 		vm.popTryFrame()
 		vm.pc++
@@ -5220,7 +5295,7 @@ func (n concatStrings) exec(vm *vm) {
 		vm.stack[vm.sp-1] = asciiString(buf.String())
 	} else {
 		var buf unicodeStringBuilder
-		buf.ensureStarted(length)
+		buf.Grow(length)
 		for _, s := range strs {
 			buf.writeString(s.(String))
 		}
