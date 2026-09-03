@@ -1,6 +1,6 @@
 module github.com/rl404/naka
 
-go 1.26
+go 1.26.0
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.44.2
 	github.com/rl404/fairy v0.27.0
 	github.com/spf13/cobra v1.10.2
-	google.golang.org/api v0.296.0
+	google.golang.org/api v0.297.0
 )
 
 require (
