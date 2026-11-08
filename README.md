@@ -1,3 +1,5 @@
+> # Current status: BROKEN
+
 # Naka
 
 ![License: MIT](https://img.shields.io/github/license/rl404/naka)
