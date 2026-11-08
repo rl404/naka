@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -20,7 +20,12 @@ import (
 const (
 	Size1Kb  = 1024
 	Size1Mb  = Size1Kb * 1024
+	Size2Mb  = Size1Mb * 2
 	Size10Mb = Size1Mb * 10
+
+	// maxMediaChunkSize is the largest googlevideo range that reliably succeeds.
+	// Larger single ranges (and full-file GETs) are rejected with HTTP 403.
+	maxMediaChunkSize = Size2Mb
 
 	playerParams = "CgIQBg=="
 )
@@ -29,8 +34,9 @@ const ContentPlaybackNonceAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop
 
 var ErrNoFormat = errors.New("no video format provided")
 
-// DefaultClient type to use. No reason to change but you could if you wanted to.
-var DefaultClient = AndroidVRClient
+// DefaultClient type to use. Android VR only serves a prefix of googlevideo
+// streams (HTTP 403 on the tail); the android_sdkless client returns full URLs.
+var DefaultClient = AndroidClient
 
 // Client offers methods to download video metadata and video streams.
 type Client struct {
@@ -41,7 +47,7 @@ type Client struct {
 	// MaxRoutines to use when downloading a video.
 	MaxRoutines int
 
-	// ChunkSize to use when downloading videos in chunks. Default is Size10Mb.
+	// ChunkSize to use when downloading videos in chunks. Default is Size2Mb.
 	ChunkSize int64
 
 	// playerCache caches the JavaScript code of a player response
@@ -121,9 +127,11 @@ func (c *Client) videoFromID(ctx context.Context, id string) (*Video, error) {
 
 	// If the uploader marked the video as inappropriate for some ages, use embed player
 	if errors.Is(err, ErrLoginRequired) {
-		c.client = &EmbeddedClient
+		// Use a copy, so that later requests of this client still use its own client type
+		embedded := *c
+		embedded.client = &EmbeddedClient
 
-		bodyEmbed, errEmbed := c.videoDataByInnertube(ctx, id)
+		bodyEmbed, errEmbed := embedded.videoDataByInnertube(ctx, id)
 		if errEmbed == nil {
 			errEmbed = v.parseVideoInfo(bodyEmbed)
 		}
@@ -253,38 +261,30 @@ func (c *Client) videoDataByInnertube(ctx context.Context, id string) ([]byte, e
 	return c.httpPostBodyBytes(ctx, "https://www.youtube.com/youtubei/v1/player?key="+c.client.Key, data)
 }
 
-func (c *Client) transcriptDataByInnertube(ctx context.Context, id string, lang string) ([]byte, error) {
-	data := innertubeRequest{
-		Context: prepareInnertubeContext(*c.client),
-		Params:  transcriptVideoID(id, lang),
-	}
-
-	return c.httpPostBodyBytes(ctx, "https://www.youtube.com/youtubei/v1/get_transcript?key="+c.client.Key, data)
-}
-
 func randString(alphabet string, sz int) string {
 	var buf strings.Builder
 	buf.Grow(sz)
-	for i := 0; i < sz; i++ {
-		buf.WriteByte(alphabet[rand.Intn(len(alphabet))])
+	for range sz {
+		buf.WriteByte(alphabet[rand.IntN(len(alphabet))])
 	}
 	return buf.String()
 }
 
 func randomVisitorData(countryCode string) string {
+	// ProtoBuilder writes into a bytes.Buffer, which never returns an error.
 	var pbE2 ProtoBuilder
 
-	pbE2.String(2, "")
-	pbE2.Varint(4, int64(rand.Intn(255)+1))
+	_ = pbE2.String(2, "")
+	_ = pbE2.Varint(4, int64(rand.IntN(255)+1))
 
 	var pbE ProtoBuilder
-	pbE.String(1, countryCode)
-	pbE.Bytes(2, pbE2.ToBytes())
+	_ = pbE.String(1, countryCode)
+	_ = pbE.Bytes(2, pbE2.ToBytes())
 
 	var pb ProtoBuilder
-	pb.String(1, randString(ContentPlaybackNonceAlphabet, 11))
-	pb.Varint(5, time.Now().Unix()-int64(rand.Intn(600000)))
-	pb.Bytes(6, pbE.ToBytes())
+	_ = pb.String(1, randString(ContentPlaybackNonceAlphabet, 11))
+	_ = pb.Varint(5, time.Now().Unix()-int64(rand.IntN(600000)))
+	_ = pb.Bytes(6, pbE.ToBytes())
 
 	return pb.ToURLEncodedBase64()
 }
@@ -325,22 +325,6 @@ func prepareInnertubePlaylistData(ID string, continuation bool, clientInfo Clien
 		RacyCheckOk:    true,
 		Params:         playerParams,
 	}
-}
-
-// transcriptVideoID encodes the video ID to the param used to fetch transcripts.
-func transcriptVideoID(videoID string, lang string) string {
-	langCode := encTranscriptLang(lang)
-
-	// This can be optionally appened to the Sprintf str, not sure what it means
-	// *3engagement-panel-searchable-transcript-search-panel\x30\x00\x38\x01\x40\x01
-	return base64Enc(fmt.Sprintf("\n\x0b%s\x12\x12%s\x18\x01", videoID, langCode))
-}
-
-func encTranscriptLang(languageCode string) string {
-	s := fmt.Sprintf("\n\x03asr\x12\x02%s\x1a\x00", languageCode)
-	s = base64PadEnc(s)
-
-	return url.QueryEscape(s)
 }
 
 // GetPlaylist fetches playlist metadata
@@ -396,13 +380,16 @@ func (c *Client) GetStreamContext(ctx context.Context, video *Video, format *For
 
 	r, w := io.Pipe()
 	contentLength := format.ContentLength
+	if contentLength == 0 {
+		contentLength = c.probeContentLength(req)
+	}
 
 	if contentLength == 0 {
 		// some videos don't have length information
 		contentLength = c.downloadOnce(req, w, format)
 	} else {
 		// we have length information, let's download by chunks!
-		c.downloadChunked(ctx, req, w, format)
+		c.downloadChunked(ctx, req, w, contentLength)
 	}
 
 	return r, contentLength, nil
@@ -432,11 +419,15 @@ func (c *Client) downloadOnce(req *http.Request, w *io.PipeWriter, _ *Format) in
 }
 
 func (c *Client) getChunkSize() int64 {
+	size := int64(Size2Mb)
 	if c.ChunkSize > 0 {
-		return c.ChunkSize
+		size = c.ChunkSize
+	}
+	if size > maxMediaChunkSize {
+		return maxMediaChunkSize
 	}
 
-	return Size10Mb
+	return size
 }
 
 func (c *Client) getMaxRoutines(limit int) int {
@@ -453,8 +444,8 @@ func (c *Client) getMaxRoutines(limit int) int {
 	return routines
 }
 
-func (c *Client) downloadChunked(ctx context.Context, req *http.Request, w *io.PipeWriter, format *Format) {
-	chunks := getChunks(format.ContentLength, c.getChunkSize())
+func (c *Client) downloadChunked(ctx context.Context, req *http.Request, w *io.PipeWriter, contentLength int64) {
+	chunks := getChunks(contentLength, c.getChunkSize())
 	maxRoutines := c.getMaxRoutines(len(chunks))
 
 	cancelCtx, cancel := context.WithCancel(ctx)
@@ -464,7 +455,7 @@ func (c *Client) downloadChunked(ctx context.Context, req *http.Request, w *io.P
 	}
 
 	currentChunk := atomic.Uint32{}
-	for i := 0; i < maxRoutines; i++ {
+	for range maxRoutines {
 		go func() {
 			for {
 				chunkIndex := int(currentChunk.Add(1)) - 1
@@ -487,7 +478,7 @@ func (c *Client) downloadChunked(ctx context.Context, req *http.Request, w *io.P
 
 	go func() {
 		// copy chunks into the PipeWriter
-		for i := 0; i < len(chunks); i++ {
+		for i := range chunks {
 			select {
 			case <-cancelCtx.Done():
 				abort(context.Canceled)
@@ -553,7 +544,7 @@ func (c *Client) httpDo(req *http.Request) (*http.Response, error) {
 	req.Header.Set("Sec-Fetch-Mode", "navigate")
 
 	if len(c.consentID) == 0 {
-		c.consentID = strconv.Itoa(rand.Intn(899) + 100) //nolint:gosec
+		c.consentID = strconv.Itoa(rand.IntN(899) + 100) //nolint:gosec
 	}
 
 	req.AddCookie(&http.Cookie{
@@ -564,10 +555,13 @@ func (c *Client) httpDo(req *http.Request) (*http.Response, error) {
 	})
 
 	res, err := client.Do(req)
+	if isRateLimitRedirect(err) {
+		err = fmt.Errorf("%w: %w", ErrRateLimited, err)
+	}
 
 	log := slog.With("method", req.Method, "url", req.URL)
 
-	if err == nil && res.StatusCode != http.StatusOK {
+	if err == nil && !isDownloadStatusOK(res.StatusCode) {
 		err = ErrUnexpectedStatusCode(res.StatusCode)
 		res.Body.Close()
 		res = nil
@@ -580,6 +574,14 @@ func (c *Client) httpDo(req *http.Request) (*http.Response, error) {
 	}
 
 	return res, err
+}
+
+// isRateLimitRedirect reports whether YouTube redirected the request to Google's
+// "unusual traffic" page (https://www.google.com/sorry/...), e.g. until the
+// HTTP client stopped after too many redirects.
+func isRateLimitRedirect(err error) bool {
+	var urlErr *url.Error
+	return errors.As(err, &urlErr) && strings.Contains(urlErr.URL, "google.com/sorry")
 }
 
 // httpGet does a HTTP GET request, checks the response to be a 200 OK and returns it
@@ -614,7 +616,7 @@ func (c *Client) httpGetBodyBytes(ctx context.Context, url string) ([]byte, erro
 }
 
 // httpPost does a HTTP POST request with a body, checks the response to be a 200 OK and returns it
-func (c *Client) httpPost(ctx context.Context, url string, body interface{}) (*http.Response, error) {
+func (c *Client) httpPost(ctx context.Context, url string, body any) (*http.Response, error) {
 	data, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
@@ -701,7 +703,7 @@ func (c *Client) refreshVisitorId() error {
 }
 
 // httpPostBodyBytes reads the whole HTTP body and returns it
-func (c *Client) httpPostBodyBytes(ctx context.Context, url string, body interface{}) ([]byte, error) {
+func (c *Client) httpPostBodyBytes(ctx context.Context, url string, body any) ([]byte, error) {
 	resp, err := c.httpPost(ctx, url, body)
 	if err != nil {
 		return nil, err
@@ -714,10 +716,37 @@ func (c *Client) httpPostBodyBytes(ctx context.Context, url string, body interfa
 // downloadChunk writes the response data into the data channel of the chunk.
 // Downloading in multiple chunks is much faster:
 // https://github.com/kkdai/youtube/pull/190
+func isDownloadStatusOK(code int) bool {
+	return code == http.StatusOK || code == http.StatusPartialContent
+}
+
+func (c *Client) probeContentLength(req *http.Request) int64 {
+	probe := req.Clone(req.Context())
+	probe.Header.Set("Range", "bytes=0-0")
+
+	resp, err := c.httpDo(probe)
+	if err != nil {
+		return 0
+	}
+	defer resp.Body.Close()
+	_, _ = io.Copy(io.Discard, resp.Body)
+
+	if cr := resp.Header.Get("Content-Range"); cr != "" {
+		if i := strings.LastIndex(cr, "/"); i >= 0 && i+1 < len(cr) {
+			n, err := strconv.ParseInt(cr[i+1:], 10, 64)
+			if err == nil {
+				return n
+			}
+		}
+	}
+
+	return 0
+}
+
 func (c *Client) downloadChunk(req *http.Request, chunk *chunk) error {
-	q := req.URL.Query()
-	q.Set("range", fmt.Sprintf("%d-%d", chunk.start, chunk.end))
-	req.URL.RawQuery = q.Encode()
+	// Use the HTTP Range header instead of rewriting the signed query string.
+	// Re-encoding videoplayback URLs can invalidate signatures and trigger 403.
+	req.Header.Set("Range", fmt.Sprintf("bytes=%d-%d", chunk.start, chunk.end))
 
 	resp, err := c.httpDo(req)
 	if err != nil {
@@ -725,7 +754,7 @@ func (c *Client) downloadChunk(req *http.Request, chunk *chunk) error {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if !isDownloadStatusOK(resp.StatusCode) {
 		return ErrUnexpectedStatusCode(resp.StatusCode)
 	}
 
