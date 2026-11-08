@@ -11,12 +11,12 @@ require (
 	github.com/newrelic/go-agent/v3 v3.45.0
 	github.com/rl404/fairy v0.27.1
 	github.com/spf13/cobra v1.10.2
-	google.golang.org/api v0.310.0
+	google.golang.org/api v0.311.0
 )
 
 require (
 	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
-	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
+	cloud.google.com/go/auth/oauth2adapt v0.3.1 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
 	github.com/allegro/bigcache/v3 v3.2.0 // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
@@ -53,7 +53,7 @@ require (
 	golang.org/x/oauth2 v0.37.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b // indirect
-	google.golang.org/grpc v1.84.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261026165753-2ffab32bce7e // indirect
+	google.golang.org/grpc v1.85.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 )
