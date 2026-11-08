@@ -1,0 +1,16 @@
+services:
+  naka-lint:
+    container_name: naka-lint
+    image: golangci/golangci-lint:v2.15.0
+    working_dir: /naka
+    command: make lint
+    environment:
+      - GOFLAGS=-mod=vendor
+    volumes:
+      - ../:/naka:ro
+      - go-mod-cache:/go/pkg/mod
+    profiles:
+      - lint
+
+volumes:
+  go-mod-cache:

@@ -15,8 +15,8 @@ import (
 	"github.com/rl404/naka/internal/domain/youtube/entity"
 	"github.com/rl404/naka/internal/errors"
 	"github.com/rl404/naka/internal/utils"
-	"google.golang.org/api/googleapi/transport"
 	"google.golang.org/api/option"
+	gHttp "google.golang.org/api/transport/http"
 	_youtube "google.golang.org/api/youtube/v3"
 )
 
@@ -28,13 +28,23 @@ type Client struct {
 
 // New to create new youtube client.
 func New(key string) (*Client, error) {
+	transport, err := gHttp.NewTransport(
+		context.Background(),
+		newrelic.NewRoundTripper(http.DefaultTransport),
+		option.WithAPIKey(key),
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	service, err := _youtube.NewService(context.Background(), option.WithHTTPClient(&http.Client{
-		Transport: newrelic.NewRoundTripper(&transport.APIKey{Key: key}),
+		Transport: transport,
 		Timeout:   5 * time.Second,
 	}))
 	if err != nil {
 		return nil, err
 	}
+
 	return &Client{
 		client: &youtube.Client{
 			HTTPClient: &http.Client{

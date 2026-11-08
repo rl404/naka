@@ -259,6 +259,11 @@ func (o *primitiveValueObject) exportType() reflect.Type {
 	return o.pValue.ExportType()
 }
 
+// FunctionCall represents a call to a JavaScript function.
+//
+// This must never be nil; use _undefined (or Undefined()) when there is no
+// receiver. Arguments may contain nil values, which are treated as undefined
+// (e.g. by FunctionCall.Argument).
 type FunctionCall struct {
 	This      Value
 	Arguments []Value
@@ -272,14 +277,14 @@ type ConstructorCall struct {
 
 func (f FunctionCall) Argument(idx int) Value {
 	if idx < len(f.Arguments) {
-		return f.Arguments[idx]
+		return nilSafe(f.Arguments[idx])
 	}
 	return _undefined
 }
 
 func (f ConstructorCall) Argument(idx int) Value {
 	if idx < len(f.Arguments) {
-		return f.Arguments[idx]
+		return nilSafe(f.Arguments[idx])
 	}
 	return _undefined
 }
@@ -818,19 +823,35 @@ func (o *baseObject) _defineOwnProperty(name unistring.String, getName func() un
 	}
 
 	if descr.Value != nil || descr.Writable != FLAG_NOT_SET {
+		if existing.accessor {
+			// Replace an accessor property with a data property. Missing [[Value]]
+			// and [[Writable]] fields default to undefined and false respectively.
+			existing.getterFunc = nil
+			existing.setterFunc = nil
+			if descr.Value == nil {
+				existing.value = nil
+			}
+			existing.writable = descr.Writable.Bool()
+		}
 		existing.accessor = false
 	}
 
-	if descr.Getter != nil {
-		existing.getterFunc = propGetter(o.val, descr.Getter, o.val.runtime)
+	if descr.Getter != nil || descr.Setter != nil {
+		if !existing.accessor {
+			// Replace a data property with an accessor property. Missing [[Get]]
+			// and [[Set]] fields default to undefined.
+			existing.getterFunc = nil
+			existing.setterFunc = nil
+		}
+		if descr.Getter != nil {
+			existing.getterFunc = propGetter(o.val, descr.Getter, o.val.runtime)
+		}
+		if descr.Setter != nil {
+			existing.setterFunc = propSetter(o.val, descr.Setter, o.val.runtime)
+		}
 		existing.value = nil
 		existing.accessor = true
-	}
-
-	if descr.Setter != nil {
-		existing.setterFunc = propSetter(o.val, descr.Setter, o.val.runtime)
-		existing.value = nil
-		existing.accessor = true
+		existing.writable = false
 	}
 
 	if !existing.accessor && existing.value == nil {

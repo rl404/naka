@@ -1,0 +1,8 @@
+services:
+  naka-bot:
+    container_name: naka-bot
+    image: rl404/naka:latest
+    command: bot
+    restart: unless-stopped
+    env_file: ../.env
+    network_mode: host

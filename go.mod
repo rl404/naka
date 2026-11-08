@@ -1,6 +1,6 @@
 module github.com/rl404/naka
 
-go 1.26.0
+go 1.27.3
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
@@ -21,15 +21,14 @@ require (
 	github.com/allegro/bigcache/v3 v3.2.0 // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dlclark/regexp2 v1.11.5 // indirect
-	github.com/dlclark/regexp2/v2 v2.12.0 // indirect
-	github.com/dop251/goja v0.0.0-20261103214539-f5d1d0025744 // indirect
+	github.com/dlclark/regexp2/v2 v2.13.0 // indirect
+	github.com/dop251/goja v0.0.0-20261107161106-d6eaa50db8bc // indirect
 	github.com/felixge/httpsnoop v1.1.0 // indirect
 	github.com/go-chi/chi/v5 v5.4.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
-	github.com/google/pprof v0.0.0-20261103193413-97e8293de3c4 // indirect
+	github.com/google/pprof v0.0.0-20261105003125-4bf881d7fb0b // indirect
 	github.com/google/s2a-go v0.1.11 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.24 // indirect

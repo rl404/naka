@@ -1,4 +1,11 @@
+> # Current status: BROKEN
+
 # Naka
+
+![License: MIT](https://img.shields.io/github/license/rl404/naka)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/rl404/naka)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/rl404/naka)](https://hub.docker.com/r/rl404/naka)
+[![CI](https://github.com/rl404/naka/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/rl404/naka/actions/workflows/ci.yml)
 
 Naka is a discord bot to play song from youtube.
 
@@ -30,32 +37,35 @@ Naka is a discord bot to play song from youtube.
 
 1. Git clone this repo.
 
-```bash
-git clone github.com/rl404/naka
-```
+   ```bash
+   git clone github.com/rl404/naka
+   ```
 
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
 
-| Env                    |  Default   | Description                       |
-| ---------------------- | :--------: | --------------------------------- |
-| `NAKA_DISCORD_TOKEN`\* |            | Discord bot token.                |
-| `NAKA_DISCORD_PREFIX`  |    `=`     | Discord bot prefix command.       |
-| `NAKA_CACHE_DIALECT`   | `inmemory` | Cache type (`inmemory`, `redis`). |
-| `NAKA_CACHE_ADDRESS`   |            | Cache address.                    |
-| `NAKA_CACHE_PASSWORD`  |            | Cache password.                   |
-| `NAKA_CACHE_TIME`      |   `24h`    | Cache duration.                   |
-| `NAKA_YOUTUBE_KEY`\*   |            | Youtube API key.                  |
+   | Env                    |  Default   | Description                       |
+   | ---------------------- | :--------: | --------------------------------- |
+   | `NAKA_DISCORD_TOKEN`\* |            | Discord bot token.                |
+   | `NAKA_DISCORD_PREFIX`  |    `=`     | Discord bot prefix command.       |
+   | `NAKA_CACHE_DIALECT`   | `inmemory` | Cache type (`inmemory`, `redis`). |
+   | `NAKA_CACHE_ADDRESS`   |            | Cache address.                    |
+   | `NAKA_CACHE_PASSWORD`  |            | Cache password.                   |
+   | `NAKA_CACHE_TIME`      |   `24h`    | Cache duration.                   |
+   | `NAKA_YOUTUBE_KEY`\*   |            | Youtube API key.                  |
+   | `NAKA_LOG_LEVEL`       |    `-1`    | Log level                         |
+   | `NAKA_LOG_JSON`        |  `false`   | Log json format                   |
+   | `NAKA_LOG_COLOR`       |   `true`   | Log color                         |
 
 3. Run.
 
-```bash
-make
+   ```bash
+   make bot
 
-# or using docker
-make docker
-# to stop docker
-make docker-stop
-```
+   # or using docker
+   make docker-bot
+   # to stop docker
+   make docker-stop
+   ```
 
 4. Invite the bot to your server.
 5. Join a voice channel.
