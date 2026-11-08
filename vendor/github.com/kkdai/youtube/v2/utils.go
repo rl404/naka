@@ -1,7 +1,7 @@
 package youtube
 
 import (
-	"encoding/base64"
+	"strings"
 
 	sjson "github.com/bitly/go-simplejson"
 )
@@ -15,11 +15,17 @@ type chunk struct {
 func getChunks(totalSize, chunkSize int64) []chunk {
 	var chunks []chunk
 
+	if chunkSize <= 0 {
+		chunkSize = Size2Mb
+	}
+
+	// googlevideo rejects a single request that covers the entire file.
+	if totalSize > 1 && chunkSize >= totalSize {
+		chunkSize = totalSize / 2
+	}
+
 	for start := int64(0); start < totalSize; start += chunkSize {
-		end := chunkSize + start - 1
-		if end > totalSize-1 {
-			end = totalSize - 1
-		}
+		end := min(chunkSize+start-1, totalSize-1)
 
 		chunks = append(chunks, chunk{start, end, make(chan []byte, 1)})
 	}
@@ -69,15 +75,15 @@ func sjsonGetText(j *sjson.Json, paths ...string) string {
 	}
 
 	if p := j.Get("runs"); isValidJSON(p) {
-		var text string
+		var text strings.Builder
 
 		for i := 0; i < len(p.MustArray()); i++ {
 			if textNode := p.GetIndex(i).Get("text"); isValidJSON(textNode) {
-				text += textNode.MustString()
+				text.WriteString(textNode.MustString())
 			}
 		}
 
-		return text
+		return text.String()
 	}
 
 	return ""
@@ -86,12 +92,4 @@ func sjsonGetText(j *sjson.Json, paths ...string) string {
 func getContinuation(j *sjson.Json) string {
 	return j.GetPath("continuations").
 		GetIndex(0).GetPath("nextContinuationData", "continuation").MustString()
-}
-
-func base64PadEnc(str string) string {
-	return base64.StdEncoding.EncodeToString([]byte(str))
-}
-
-func base64Enc(str string) string {
-	return base64.RawStdEncoding.EncodeToString([]byte(str))
 }
